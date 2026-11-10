@@ -1,0 +1,29 @@
+{
+ "part_number": "SolderJumper_2_Bridged",
+ "description": "2-pad solder jumper, bridged by default (cut to open); a 0 ohm link",
+ "reference_prefix": "JP",
+ "package": "SolderJumper-2",
+ "footprint": "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm",
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "1",
+     "1"
+    ]
+   ]
+  },
+  {
+   "role": "passive",
+   "side": "right",
+   "pins": [
+    [
+     "2",
+     "2"
+    ]
+   ]
+  }
+ ],
+ "component_type": "resistor"
+}

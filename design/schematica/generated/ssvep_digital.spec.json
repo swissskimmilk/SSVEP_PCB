@@ -1,0 +1,27 @@
+{
+  "title": "ssvep_digital",
+  "parts": [
+    {
+      "ref": "SHEETBOX1",
+      "mpn": "SHEETBOX_mcu",
+      "value": "MCU",
+      "datasheet": "sheet:MCU"
+    },
+    {
+      "ref": "SHEETBOX2",
+      "mpn": "SHEETBOX_pd",
+      "value": "PD",
+      "datasheet": "sheet:PD"
+    }
+  ],
+  "nets": {
+    "SHEETBOX1.1": "ADC_SCLK",
+    "SHEETBOX1.2": "ADC_DIN",
+    "SHEETBOX1.3": "ADC_DOUT",
+    "SHEETBOX1.4": "ADC_CS_N",
+    "SHEETBOX1.5": "ADC_DRDY_N",
+    "SHEETBOX1.6": "ADC_SYNC_RESET_N",
+    "SHEETBOX1.7": "ADC_CLKIN",
+    "SHEETBOX2.1": "PD_OUT"
+  }
+}

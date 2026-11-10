@@ -1,0 +1,22 @@
+{
+ "part_number": "Device:R",
+ "reference_prefix": "R",
+ "source_symbol": "Device:R",
+ "description": "Resistor",
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "~",
+     "1"
+    ],
+    [
+     "~",
+     "2"
+    ]
+   ]
+  }
+ ],
+ "component_type": "resistor"
+}

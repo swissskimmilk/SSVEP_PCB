@@ -1,0 +1,266 @@
+{
+  "title": "mcu",
+  "parts": [
+    {
+      "ref": "U2",
+      "mpn": "XIAO-nRF52840",
+      "value": "XIAO nRF52840",
+      "why": "BLE MCU module with charger, USB-C and bootloader; castellated so every joint can be inspected"
+    },
+    {
+      "ref": "R1",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "SCLK series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R2",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "DIN (MOSI) series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R3",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "CS series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R4",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "DOUT (MISO) series, at the ADC",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R5",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "MCU-driven CLKIN (default). Remove when Y1 is fitted",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R6",
+      "mpn": "RC0805FR-0733RL",
+      "kind": "R",
+      "value": "33",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "Y1 output to CLKIN; fit together with Y1",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "dnp": true
+    },
+    {
+      "ref": "R7",
+      "mpn": "RC0805FR-0710KL",
+      "kind": "R",
+      "value": "10k",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "SYNC/RESET pull-up: ADC runs while the XIAO pin floats at boot",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "Y1",
+      "mpn": "ECS-2520MVLC-081.92-CN-TR",
+      "value": "8.192MHz",
+      "datasheet": "https://ecsxtal.com/store/pdf/ECS-2520MVLC.pdf",
+      "why": "optional exact 8.192 MHz ADC clock",
+      "dnp": true
+    },
+    {
+      "ref": "C3",
+      "mpn": "CL21B104KBCNNNC",
+      "kind": "C",
+      "value": "100n",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do",
+      "why": "Y1 decoupling",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "dnp": true,
+      "bypasses": "Y1.4",
+      "near": {
+        "1": {
+          "to": "Y1.4",
+          "max_mm": 2.0
+        }
+      }
+    },
+    {
+      "ref": "JP2",
+      "mpn": "solder-jumper-2",
+      "value": "0R",
+      "why": "CHG_LINK. Bridged: the XIAO charges the cell and runs from it. Cut: XIAO charger isolated, charge the cell externally"
+    },
+    {
+      "ref": "C6",
+      "mpn": "CL21B105KBFVPJE",
+      "kind": "C",
+      "value": "1u",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do",
+      "why": "XIAO VBAT decoupling at the pad (the module has 2.2 uF inside too)",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "bypasses": "U2.19",
+      "near": {
+        "1": {
+          "to": "U2.19",
+          "max_mm": 3.0
+        }
+      }
+    },
+    {
+      "ref": "TP4",
+      "mpn": "5015",
+      "value": "VBAT"
+    },
+    {
+      "ref": "J3",
+      "mpn": "B2B-PH-K-S",
+      "value": "BATT",
+      "why": "1S LiPo connector. CHECK POLARITY of every pack: JST PH vendors disagree on which pin is +"
+    },
+    {
+      "ref": "SW2",
+      "mpn": "EG1218",
+      "value": "PWR",
+      "why": "main power switch; throw B unused"
+    },
+    {
+      "ref": "U3",
+      "mpn": "TPS7A2033PDBVR",
+      "value": "TPS7A2033",
+      "datasheet": "https://www.ti.com/lit/gpn/tps7a20",
+      "why": "low-noise 3.3 V analog rail straight from the cell, no switching regulator"
+    },
+    {
+      "ref": "C7",
+      "mpn": "CL21B105KBFVPJE",
+      "kind": "C",
+      "value": "1u",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do",
+      "why": "LDO input capacitor, at the pin",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "bypasses": "U3.1",
+      "near": {
+        "1": {
+          "to": "U3.1",
+          "max_mm": 2.0
+        }
+      }
+    },
+    {
+      "ref": "C8",
+      "mpn": "CL21B105KBFVPJE",
+      "kind": "C",
+      "value": "1u",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do",
+      "why": "LDO output capacitor (required for stability), at the pin",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "bypasses": "U3.5",
+      "near": {
+        "1": {
+          "to": "U3.5",
+          "max_mm": 2.0
+        }
+      }
+    },
+    {
+      "ref": "TP5",
+      "mpn": "5015",
+      "value": "+3.3V"
+    },
+    {
+      "ref": "TP6",
+      "mpn": "5015",
+      "value": "GND"
+    }
+  ],
+  "nets": {
+    "U2.19": "VBAT_XIAO",
+    "JP2.2": "VBAT_XIAO",
+    "C6.1": "VBAT_XIAO",
+    "R7.2": "+3.3V",
+    "Y1.4": "+3.3V",
+    "Y1.1": "+3.3V",
+    "C3.1": "+3.3V",
+    "U3.5": "+3.3V",
+    "C8.1": "+3.3V",
+    "TP5.1": "+3.3V",
+    "U2.13": "GND",
+    "U2.18": "GND",
+    "U2.20": "GND",
+    "Y1.2": "GND",
+    "C3.2": "GND",
+    "C6.2": "GND",
+    "J3.2": "GND",
+    "U3.2": "GND",
+    "C7.2": "GND",
+    "C8.2": "GND",
+    "TP6.1": "GND",
+    "U2.9": "MCU_SCLK",
+    "R1.1": "MCU_SCLK",
+    "R1.2": "ADC_SCLK",
+    "U2.11": "MCU_MOSI",
+    "R2.1": "MCU_MOSI",
+    "R2.2": "ADC_DIN",
+    "U2.10": "MCU_MISO",
+    "R4.2": "MCU_MISO",
+    "R4.1": "ADC_DOUT",
+    "U2.8": "MCU_CS",
+    "R3.1": "MCU_CS",
+    "R3.2": "ADC_CS_N",
+    "U2.7": "ADC_DRDY_N",
+    "U2.6": "ADC_SYNC_RESET_N",
+    "R7.1": "ADC_SYNC_RESET_N",
+    "U2.4": "MCU_CLK",
+    "R5.1": "MCU_CLK",
+    "Y1.3": "OSC_OUT",
+    "R6.1": "OSC_OUT",
+    "R5.2": "ADC_CLKIN",
+    "R6.2": "ADC_CLKIN",
+    "U2.5": "ANA_EN",
+    "U3.3": "ANA_EN",
+    "JP2.1": "VBAT",
+    "TP4.1": "VBAT",
+    "SW2.1": "VBAT",
+    "U3.1": "VBAT",
+    "C7.1": "VBAT",
+    "J3.1": "VBAT_RAW",
+    "SW2.2": "VBAT_RAW"
+  },
+  "net_priority": {
+    "MCU_SCLK": 10,
+    "ADC_SCLK": 10,
+    "MCU_MOSI": 11,
+    "ADC_DIN": 11,
+    "MCU_MISO": 12,
+    "ADC_DOUT": 12,
+    "MCU_CS": 13,
+    "ADC_CS_N": 13,
+    "ADC_DRDY_N": 14,
+    "ADC_SYNC_RESET_N": 15,
+    "MCU_CLK": 16,
+    "OSC_OUT": 16,
+    "ADC_CLKIN": 16,
+    "ANA_EN": 17
+  },
+  "hier_labels": {
+    "ADC_SCLK": "output",
+    "ADC_DIN": "output",
+    "ADC_DOUT": "input",
+    "ADC_CS_N": "output",
+    "ADC_DRDY_N": "input",
+    "ADC_SYNC_RESET_N": "output",
+    "ADC_CLKIN": "output"
+  }
+}

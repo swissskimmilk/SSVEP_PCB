@@ -1,0 +1,82 @@
+{
+ "part_number": "0530470210",
+ "manufacturer": "Molex",
+ "description": "PicoBlade header, 1x2, 1.25 mm pitch, vertical, through-hole, tin",
+ "reference_prefix": "J",
+ "component_type": "connector",
+ "package": "THT 1x02 P1.25mm vertical",
+ "category": "Connectors & Interconnects > Rectangular Connectors > Headers > Male Pins",
+ "series": "Molex PicoBlade 53047, vertical, through-hole",
+ "aliases": [
+  "53047-0210",
+  "530470210"
+ ],
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "1",
+     "1"
+    ],
+    [
+     "2",
+     "2"
+    ]
+   ]
+  }
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "page": 1,
+   "table": "ORDER NO. / CIRCUIT chart (PACKAGING: PLASTIC TRAY)",
+   "how": "read",
+   "quote": "530470210",
+   "note": "Order chart lists 530470210 (2 ckt) through 530471510 (15 ckt), one number per size, pattern 53047**10 (** = circuits). Tin type; gold is a separate drawing (530470001-SD)."
+  },
+  {
+   "field": "numbering",
+   "page": 1,
+   "table": "top view",
+   "how": "read",
+   "quote": "CIRCUIT N CIRCUIT 1",
+   "note": "Single row; CIRCUIT 1 and CIRCUIT N labelled at the two ends."
+  },
+  {
+   "field": "mechanical",
+   "page": 1,
+   "table": "RECOMMENDED PCB HOLE DIMENSION (t=0.8)",
+   "how": "read",
+   "quote": "RECOMMENDED PCB HOLE DIMENSION",
+   "note": "Layout is one row of phi0.5 holes at 1.25 pitch, nothing else; TABLE 1 lists only housing (PA) and terminal, no nail. No mechanical pads at any size."
+  }
+ ],
+ "datasheet_url": "https://www.molex.com/pdm_docs/sd/530470410_sd.pdf",
+ "datasheet_sha256": "5bfb6c1a2aa5cd53370449157f32bf19b4b2a35646e00cab271239ae6e1f6a19",
+ "datasheet_rev": "530470000-SD rev B (2022/04/19)",
+ "generated_from": "series/molex-picoblade-53047-vertical-th.series.json",
+ "verification": {
+  "tier": "library",
+  "confirmations": 2,
+  "checked": [
+   {
+    "by": "author",
+    "date": "2026-10-07",
+    "pages": [
+     1
+    ],
+    "what": "sizes 2-15 from order chart, single row, no nails/pegs in layout or Table 1"
+   },
+   {
+    "by": "second reader",
+    "date": "2026-10-07",
+    "pages": [
+     1
+    ],
+    "what": "independent read of 530470000-SD rev B: order chart 530470210-530471510 = 2-15 ckt (tin; gold is a separate SD); single row 1.25 mm, CIRCUIT 1/CIRCUIT N at the ends; PCB hole layout has only contact holes, no pegs/nails -> mp 0"
+   }
+  ]
+ },
+ "footprint": "Connector_Molex:Molex_PicoBlade_53047-0210_1x02_P1.25mm_Vertical"
+}

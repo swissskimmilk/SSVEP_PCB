@@ -1,0 +1,15 @@
+{
+  "part_number": "Connector:Conn_01x01_Pin",
+  "reference_prefix": "J",
+  "source_symbol": "Connector:Conn_01x01_Pin",
+  "description": "Generic connector, single row, 01x01, script generated",
+  "package": "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical",
+  "groups": [
+    {
+      "role": "passive",
+      "pins": [
+        ["Pin_1", "1"]
+      ]
+    }
+  ]
+}

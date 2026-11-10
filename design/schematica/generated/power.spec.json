@@ -1,0 +1,90 @@
+{
+  "title": "power",
+  "parts": [
+    {
+      "ref": "J1",
+      "mpn": "B2B-PH-K-S",
+      "value": "BATT",
+      "why": "1S LiPo connector. CHECK POLARITY of every pack: JST PH vendors disagree on which pin is +"
+    },
+    {
+      "ref": "SW1",
+      "mpn": "EG1218",
+      "value": "PWR",
+      "why": "main power switch; throw B unused"
+    },
+    {
+      "ref": "U1",
+      "mpn": "TPS7A2033PDBVR",
+      "value": "TPS7A2033",
+      "datasheet": "https://www.ti.com/lit/gpn/tps7a20",
+      "why": "low-noise 3.3 V analog rail straight from the cell, no switching regulator"
+    },
+    {
+      "ref": "C1",
+      "mpn": "CL21B105KBFVPJE",
+      "kind": "C",
+      "value": "1u",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do",
+      "why": "LDO input capacitor, at the pin",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "bypasses": "U1.1",
+      "near": {
+        "1": {
+          "to": "U1.1",
+          "max_mm": 2.0
+        }
+      }
+    },
+    {
+      "ref": "C2",
+      "mpn": "CL21B105KBFVPJE",
+      "kind": "C",
+      "value": "1u",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do",
+      "why": "LDO output capacitor (required for stability), at the pin",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "bypasses": "U1.5",
+      "near": {
+        "1": {
+          "to": "U1.5",
+          "max_mm": 2.0
+        }
+      }
+    },
+    {
+      "ref": "TP2",
+      "mpn": "5015",
+      "value": "+3.3V"
+    },
+    {
+      "ref": "TP3",
+      "mpn": "5015",
+      "value": "GND"
+    }
+  ],
+  "nets": {
+    "J1.1": "VBAT_RAW",
+    "SW1.2": "VBAT_RAW",
+    "SW1.1": "VBAT",
+    "U1.1": "VBAT",
+    "C1.1": "VBAT",
+    "U1.5": "+3.3V",
+    "C2.1": "+3.3V",
+    "TP2.1": "+3.3V",
+    "J1.2": "GND",
+    "U1.2": "GND",
+    "C1.2": "GND",
+    "C2.2": "GND",
+    "TP3.1": "GND",
+    "U1.3": "ANA_EN"
+  },
+  "net_priority": {
+    "VBAT": 1,
+    "+3.3V": 2,
+    "GND": 3
+  },
+  "hier_labels": {
+    "ANA_EN": "input"
+  }
+}

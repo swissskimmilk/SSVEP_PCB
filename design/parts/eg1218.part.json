@@ -1,0 +1,42 @@
+{
+ "part_number": "EG1218",
+ "description": "Slide switch SPDT, 200 mA 30 V, through-hole, 2.5 mm pitch",
+ "manufacturer": "E-Switch",
+ "reference_prefix": "SW",
+ "package": "THT 1x03 P2.50mm",
+ "footprint": "SSVEP:SW_Slide_SPDT_EG1218",
+ "datasheet_url": "https://configured-product-images.s3.amazonaws.com/Datasheets/EG.pdf",
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "COM",
+     "2"
+    ]
+   ]
+  },
+  {
+   "role": "passive",
+   "side": "right",
+   "pins": [
+    [
+     "A",
+     "1"
+    ],
+    [
+     "B",
+     "3"
+    ]
+   ]
+  }
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "page": 2,
+   "how": "read",
+   "quote": "EG 1218 SCHEMATIC: 02 Comm., throws 1 and 3; P.C. mounting (3) 1.0 dia holes, 2.5 pitch"
+  }
+ ]
+}

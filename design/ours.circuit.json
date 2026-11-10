@@ -1,0 +1,115 @@
+{
+  "title": "ssvep_digital",
+  "summary": "Our half of the SSVEP board: POWER, MCU and PD (photodiode) pages. The ADC_* and PD_OUT ports run off this root to the partners' analog sheet, where the ADS131M08 lives; they are joined in the merge.",
+  "sheets": {
+    "MCU": {
+      "file": "mcu_power.circuit.json"
+    },
+    "PD": {
+      "file": "photodiode.circuit.json"
+    }
+  },
+  "components": [],
+  "nets": {
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "pins": [
+        "MCU:+3.3V",
+        "PD:+3.3V"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "pins": [
+        "MCU:GND",
+        "PD:GND"
+      ]
+    },
+    "ADC_SCLK": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_SCLK"
+      ]
+    },
+    "ADC_DIN": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DIN"
+      ]
+    },
+    "ADC_DOUT": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DOUT"
+      ]
+    },
+    "ADC_CS_N": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_CS_N"
+      ]
+    },
+    "ADC_DRDY_N": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_DRDY_N"
+      ]
+    },
+    "ADC_SYNC_RST": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_SYNC_RST"
+      ]
+    },
+    "ADC_CLKIN": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_CLKIN"
+      ]
+    },
+    "PD_OUT": {
+      "kind": "signal",
+      "pins": [
+        "PD:PD_OUT"
+      ]
+    }
+  },
+  "ports": {
+    "+3.3V": {
+      "dir": "out",
+      "current_ma": 300
+    },
+    "GND": {
+      "dir": "bidir"
+    },
+    "ADC_SCLK": {
+      "dir": "out"
+    },
+    "ADC_DIN": {
+      "dir": "out"
+    },
+    "ADC_DOUT": {
+      "dir": "in"
+    },
+    "ADC_CS_N": {
+      "dir": "out"
+    },
+    "ADC_DRDY_N": {
+      "dir": "in"
+    },
+    "ADC_SYNC_RST": {
+      "dir": "out"
+    },
+    "ADC_CLKIN": {
+      "dir": "out"
+    },
+    "PD_OUT": {
+      "dir": "out"
+    }
+  }
+}

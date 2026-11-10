@@ -1,0 +1,95 @@
+{
+  "title": "ssvep_board",
+  "summary": "Top level: the partners' analog front end (ANALOG, their sheet with the planned minimal edits) plus our three sheets. POWER makes +3.3V for everything analog and hands the switched cell to the XIAO. MCU talks SPI to the ADS131M08 on the ANALOG sheet and enables the analog LDO. PD brings the screen-sync photodiode into ADC channel 4.",
+  "sheets": {
+    "MCU": {
+      "file": "mcu_power.circuit.json"
+    },
+    "PD": {
+      "file": "photodiode.circuit.json"
+    },
+    "ANALOG": {
+      "file": "partner/analog_planned.circuit.json"
+    }
+  },
+  "components": [],
+  "nets": {
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "pins": [
+        "MCU:+3.3V",
+        "PD:+3.3V",
+        "ANALOG:+3.3V"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "pins": [
+        "MCU:GND",
+        "PD:GND",
+        "ANALOG:GND"
+      ]
+    },
+    "ADC_SCLK": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_SCLK",
+        "ANALOG:ADC_SCLK"
+      ]
+    },
+    "ADC_DIN": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DIN",
+        "ANALOG:ADC_DIN"
+      ]
+    },
+    "ADC_DOUT": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DOUT",
+        "ANALOG:ADC_DOUT"
+      ]
+    },
+    "ADC_CS_N": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_CS_N",
+        "ANALOG:ADC_CS_N"
+      ]
+    },
+    "ADC_DRDY_N": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_DRDY_N",
+        "ANALOG:ADC_DRDY_N"
+      ]
+    },
+    "ADC_SYNC_RST": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_SYNC_RST",
+        "ANALOG:ADC_SYNC_RST"
+      ]
+    },
+    "ADC_CLKIN": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_CLKIN",
+        "ANALOG:ADC_CLKIN"
+      ]
+    },
+    "PD_OUT": {
+      "kind": "signal",
+      "pins": [
+        "PD:PD_OUT",
+        "ANALOG:PD_OUT"
+      ]
+    }
+  }
+}

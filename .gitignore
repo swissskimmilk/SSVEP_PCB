@@ -1,0 +1,18 @@
+# KiCad local state and backups
+*.kicad_prl
+*-backups/
+*.bak
+*.lck
+fp-info-cache
+_autosave-*
+\#auto_saved_files#
+
+# Local snapshots taken before edits
+design/backup/
+
+# Build and tool output
+firmware/.pio/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+host/sessions/

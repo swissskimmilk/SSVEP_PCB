@@ -1,0 +1,70 @@
+{
+  "part_number": "2026-10-18_20-53-16:ADS131M08IPBS",
+  "reference_prefix": "U",
+  "source_symbol": "2026-10-18_20-53-16:ADS131M08IPBS",
+  "package": "PBS0032A_N",
+  "datasheet_url": "https://www.ti.com/lit/gpn/ads131m08",
+  "groups": [
+    {
+      "role": "power",
+      "pins": [
+        ["AVDD", "15"],
+        ["IOVDD", "26"],
+        ["AVDD", "27"]
+      ]
+    },
+    {
+      "role": "ground",
+      "pins": [
+        ["AGND_REFGND", "13"],
+        ["DGND", "25"],
+        ["AGND", "28"]
+      ]
+    },
+    {
+      "role": "input",
+      "pins": [
+        ["AIN2P", "1"],
+        ["AIN2N", "2"],
+        ["AIN3N", "3"],
+        ["AIN3P", "4"],
+        ["AIN4P", "5"],
+        ["AIN4N", "6"],
+        ["AIN5N", "7"],
+        ["AIN5P", "8"],
+        ["AIN6P", "9"],
+        ["AIN6N", "10"],
+        ["AIN7N", "11"],
+        ["AIN7P", "12"],
+        ["REFIN", "14"],
+        ["SYNC_RESET_N", "16"],
+        ["CS_N", "17"],
+        ["SCLK", "19"],
+        ["DIN", "21"],
+        ["XTAL2", "22"],
+        ["XTAL1_CLKIN", "23"],
+        ["AIN0P", "29"],
+        ["AIN0N", "30"],
+        ["AIN1N", "31"],
+        ["AIN1P", "32"]
+      ]
+    },
+    {
+      "role": "output",
+      "pins": [
+        ["DRDY_N", "18"],
+        ["DOUT", "20"]
+      ]
+    },
+    {
+      "role": "passive",
+      "pins": [
+        {
+          "name": "LDOCAP",
+          "numbers": ["24"],
+          "type": "unspecified"
+        }
+      ]
+    }
+  ]
+}

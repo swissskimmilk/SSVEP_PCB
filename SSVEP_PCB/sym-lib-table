@@ -1,0 +1,7 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "SSVEP")(type "KiCad")(uri "${KIPRJMOD}/../libs/SSVEP.kicad_sym")(options "")(descr "House-style symbols generated from design/parts (gen_symbols.py)"))
+	(lib (name "2026-10-18_07-15-18")(type "KiCad")(uri "${KIPRJMOD}/../ul_INA333AIDGKR/KiCADv6/2026-10-18_07-15-18.kicad_sym")(options "")(descr "partners' downloaded library"))
+	(lib (name "2026-10-18_20-53-16")(type "KiCad")(uri "${KIPRJMOD}/../ul_ADS131M08IPBS/KiCADv6/2026-10-18_20-53-16.kicad_sym")(options "")(descr "partners' downloaded library"))
+	(lib (name "2026-10-18_21-21-43")(type "KiCad")(uri "${KIPRJMOD}/../ul_MCP6002-I-SN/KiCADv6/2026-10-18_21-21-43.kicad_sym")(options "")(descr "partners' downloaded library"))
+)

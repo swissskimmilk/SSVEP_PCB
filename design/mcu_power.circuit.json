@@ -1,0 +1,479 @@
+{
+  "title": "mcu_power",
+  "summary": "Battery, power switch, low-noise analog LDO and the XIAO nRF52840 on one page. 1S protected LiPo on J1 (JST PH). SW1 is the main power switch in the battery line: off disconnects everything, so charging through the XIAO also needs SW1 on. After the switch the cell (VBAT) goes to the MCU page, where the charge-link jumper feeds the XIAO, and to U1. U1 (TPS7A2033, 7 uVrms) makes the partners' +3.3V analog rail directly from the cell; its EN has an internal 500k pulldown, so the analog side stays off until the MCU drives ANA_EN high. No boost converter anywhere: the LDO holds 3.3 V until the cell is near empty. U1 is a Seeed XIAO nRF52840, soldered by its castellated edge pads; the only underside pad used is VBAT (solder through a plated hole from the back). SPI to the ADS131M08 is on the XIAO's default SPI pins D8/D9/D10 with 33 ohm series resistors to slow the edges near the analog front end. D7 = CS, D6 = DRDY (interrupt), D5 = SYNC/RESET (pulled up so the ADC is not held in reset while the XIAO boots), D4 = ANA_EN for the analog LDO. The ADC master clock defaults to 8 MHz from D3 through R5; Y1 (8.192 MHz oscillator) with R6 and C1 is an unfitted alternative: fit Y1, C1, R6 and remove R5 to switch. D0-D2 (analog-capable) are spare. VBUS sensing needs no pin: VBUS reaches the nRF inside the module. FIRMWARE NOTE: when ANA_EN is low the ADC is unpowered, so drive every ADC-facing pin low or high-Z first, or the ADC back-powers through its input diodes.",
+  "components": [
+    {
+      "ref": "U1",
+      "mpn": "XIAO-nRF52840",
+      "value": "XIAO nRF52840",
+      "why": "BLE MCU module with charger, USB-C and bootloader; castellated so every joint can be inspected",
+      "nc": [
+        "D0",
+        "D1",
+        "D2",
+        "3V3_OUT",
+        "SWDIO",
+        "SWCLK",
+        "~{RESET}",
+        "NFC1",
+        "NFC2"
+      ]
+    },
+    {
+      "ref": "R1",
+      "symbol": "R",
+      "value": "33",
+      "why": "SCLK series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R2",
+      "symbol": "R",
+      "value": "33",
+      "why": "DIN (MOSI) series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R3",
+      "symbol": "R",
+      "value": "33",
+      "why": "CS series, at the XIAO",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R4",
+      "symbol": "R",
+      "value": "33",
+      "why": "DOUT (MISO) series, at the ADC",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R5",
+      "symbol": "R",
+      "value": "33",
+      "why": "MCU-driven CLKIN (default). Remove when Y1 is fitted",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R6",
+      "symbol": "R",
+      "value": "33",
+      "dnp": true,
+      "why": "Y1 output to CLKIN; fit together with Y1",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0733RL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R7",
+      "symbol": "R",
+      "value": "10k",
+      "why": "SYNC/RESET pull-up: ADC runs while the XIAO pin floats at boot",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-0710KL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "Y1",
+      "mpn": "ECS-2520MVLC-081.92-CN-TR",
+      "value": "8.192MHz",
+      "dnp": true,
+      "why": "optional exact 8.192 MHz ADC clock",
+      "datasheet": "https://ecsxtal.com/store/pdf/ECS-2520MVLC.pdf"
+    },
+    {
+      "ref": "C1",
+      "symbol": "C",
+      "value": "100n",
+      "dnp": true,
+      "why": "Y1 decoupling",
+      "pins": {
+        "1": {
+          "place_near": "Y1.VDD",
+          "max_mm": 2.0
+        }
+      },
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B104KBCNNNC",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do"
+    },
+    {
+      "ref": "R8",
+      "symbol": "R",
+      "mpn": "RC0805JR-070RL",
+      "value": "0",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "CHG_LINK 0 ohm: fitted, the XIAO charges the cell and runs from it. Removed: XIAO charger isolated, charge the cell externally"
+    },
+    {
+      "ref": "C2",
+      "symbol": "C",
+      "mpn": "CL21B105KBFVPJE",
+      "value": "1u",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "why": "XIAO VBAT decoupling at the pad (the module has 2.2 uF inside too)",
+      "pins": {
+        "1": {
+          "place_near": "U1.VBAT",
+          "max_mm": 3.0
+        }
+      },
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+    },
+    {
+      "ref": "TP1",
+      "mpn": "5015",
+      "value": "VBAT"
+    },
+    {
+      "ref": "J1",
+      "mpn": "B2B-PH-K-S",
+      "value": "BATT",
+      "why": "1S LiPo connector. CHECK POLARITY of every pack: JST PH vendors disagree on which pin is +"
+    },
+    {
+      "ref": "F1",
+      "symbol": "FUSE",
+      "mpn": "0466.500NR",
+      "value": "500mA",
+      "footprint": "Fuse:Fuse_1206_3216Metric",
+      "datasheet": "https://www.littelfuse.com/assetdocs/fuse-466-datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f",
+      "why": "short-circuit fuse in the cell's + lead (Littelfuse 466, 500 mA fast-acting, 1206)"
+    },
+    {
+      "ref": "Q1",
+      "symbol": "PMOS",
+      "mpn": "SI2301CDS-T1-GE3",
+      "value": "SI2301CDS",
+      "footprint": "Package_TO_SOT_SMD:SOT-23",
+      "datasheet": "https://www.vishay.com/docs/68741/si2301cd.pdf",
+      "why": "reverse-battery P-FET: drain to cell, source to load, gate to GND. VGS(th) -0.4..-1 V, 0.142 ohm max at -2.5 V, so fully on from an empty cell; conducts both ways, so charging still works"
+    },
+    {
+      "ref": "SW1",
+      "mpn": "EG1218",
+      "value": "PWR",
+      "why": "main power switch; throw B unused",
+      "nc": [
+        "B"
+      ]
+    },
+    {
+      "ref": "R9",
+      "symbol": "R",
+      "mpn": "RC0805JR-070RL",
+      "value": "0",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "analog LDO input from the switched cell (default). Fit exactly one of R9/R10"
+    },
+    {
+      "ref": "R10",
+      "symbol": "R",
+      "mpn": "RC0805JR-070RL",
+      "value": "0",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "dnp": true,
+      "why": "analog LDO input from USB 5 V, for bench tests with no cell: the electrodes then share the PC ground. Fit instead of R9"
+    },
+    {
+      "ref": "U2",
+      "mpn": "TPS7A2033PDBVR",
+      "value": "TPS7A2033",
+      "why": "low-noise 3.3 V analog rail straight from the cell, no switching regulator",
+      "datasheet": "https://www.ti.com/lit/gpn/tps7a20",
+      "nc": [
+        "NC"
+      ]
+    },
+    {
+      "ref": "C4",
+      "symbol": "C",
+      "value": "1u",
+      "why": "LDO input capacitor, at the pin",
+      "pins": {
+        "1": {
+          "place_near": "U2.IN",
+          "max_mm": 2.0
+        }
+      },
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B105KBFVPJE",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+    },
+    {
+      "ref": "C5",
+      "symbol": "C",
+      "value": "1u",
+      "why": "LDO output capacitor (required for stability), at the pin",
+      "pins": {
+        "1": {
+          "place_near": "U2.OUT",
+          "max_mm": 2.0
+        }
+      },
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B105KBFVPJE",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+    },
+    {
+      "ref": "TP2",
+      "mpn": "5015",
+      "value": "+3.3V"
+    },
+    {
+      "ref": "TP3",
+      "mpn": "5015",
+      "value": "GND"
+    }
+  ],
+  "nets": {
+    "VBAT_XIAO": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "U1.VBAT",
+        "R8.2",
+        "C2.1"
+      ]
+    },
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "pins": [
+        "R7.1",
+        "Y1.VDD",
+        "Y1.TRI_STATE",
+        "C1.1",
+        "U2.OUT",
+        "C5.1",
+        "TP2.1"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "pins": [
+        "U1.GND",
+        "Y1.GND",
+        "C1.2",
+        "C2.2",
+        "J1.2",
+        "U2.GND",
+        "C4.2",
+        "C5.2",
+        "TP3.1",
+        "Q1.G"
+      ]
+    },
+    "MCU_SCLK": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 10,
+      "pins": [
+        "U1.D8",
+        "R1.1"
+      ]
+    },
+    "ADC_SCLK": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 10,
+      "pins": [
+        "R1.2"
+      ]
+    },
+    "MCU_MOSI": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 11,
+      "pins": [
+        "U1.D10",
+        "R2.1"
+      ]
+    },
+    "ADC_DIN": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 11,
+      "pins": [
+        "R2.2"
+      ]
+    },
+    "MCU_MISO": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 12,
+      "pins": [
+        "U1.D9",
+        "R4.1"
+      ]
+    },
+    "ADC_DOUT": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 12,
+      "pins": [
+        "R4.2"
+      ]
+    },
+    "MCU_CS": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 13,
+      "pins": [
+        "U1.D7",
+        "R3.1"
+      ]
+    },
+    "ADC_CS_N": {
+      "kind": "signal",
+      "protocol": "spi",
+      "priority": 13,
+      "pins": [
+        "R3.2"
+      ]
+    },
+    "ADC_DRDY_N": {
+      "kind": "signal",
+      "priority": 14,
+      "pins": [
+        "U1.D6"
+      ]
+    },
+    "ADC_SYNC_RST": {
+      "kind": "signal",
+      "priority": 15,
+      "pins": [
+        "U1.D5",
+        "R7.2"
+      ]
+    },
+    "MCU_CLK": {
+      "kind": "signal",
+      "priority": 16,
+      "pins": [
+        "U1.D3",
+        "R5.1"
+      ]
+    },
+    "OSC_OUT": {
+      "kind": "signal",
+      "priority": 16,
+      "pins": [
+        "Y1.OUT",
+        "R6.1"
+      ]
+    },
+    "ADC_CLKIN": {
+      "kind": "signal",
+      "priority": 16,
+      "pins": [
+        "R5.2",
+        "R6.2"
+      ]
+    },
+    "ANA_EN": {
+      "kind": "signal",
+      "priority": 17,
+      "pins": [
+        "U1.D4",
+        "U2.EN"
+      ]
+    },
+    "VBAT": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "R8.1",
+        "TP1.1",
+        "SW1.A",
+        "R9.2"
+      ]
+    },
+    "VBAT_RAW": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "J1.1",
+        "F1.1"
+      ]
+    },
+    "BAT_FUSED": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "F1.2",
+        "Q1.D"
+      ]
+    },
+    "BAT_PROT": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "Q1.S",
+        "SW1.COM"
+      ]
+    },
+    "LDO_IN": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "R9.1",
+        "U2.IN",
+        "C4.1",
+        "R10.2"
+      ]
+    },
+    "VBUS": {
+      "kind": "power",
+      "voltage": 5.0,
+      "pins": [
+        "U1.VBUS",
+        "R10.1"
+      ]
+    }
+  },
+  "ports": {
+    "+3.3V": {
+      "dir": "out",
+      "current_ma": 300,
+      "note": "TPS7A20 rating; this board's analog side draws ~11.5 mA worst case"
+    },
+    "GND": {
+      "dir": "bidir"
+    },
+    "ADC_SCLK": {
+      "dir": "out"
+    },
+    "ADC_DIN": {
+      "dir": "out"
+    },
+    "ADC_DOUT": {
+      "dir": "in"
+    },
+    "ADC_CS_N": {
+      "dir": "out"
+    },
+    "ADC_DRDY_N": {
+      "dir": "in"
+    },
+    "ADC_SYNC_RST": {
+      "dir": "out"
+    },
+    "ADC_CLKIN": {
+      "dir": "out"
+    }
+  }
+}

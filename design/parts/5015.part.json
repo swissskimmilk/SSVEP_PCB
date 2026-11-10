@@ -1,0 +1,61 @@
+{
+ "part_number": "5015",
+ "manufacturer": "Keystone Electronics",
+ "description": "Keystone micro-miniature SMT test point, phosphor bronze silver plate, 1000 per reel",
+ "reference_prefix": "TP",
+ "component_type": "connector",
+ "package": "SMD test point 1-pad",
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "1",
+     "1"
+    ]
+   ]
+  }
+ ],
+ "aliases": [
+  "5017"
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "page": 1,
+   "table": "MICRO MINIATURE",
+   "how": "read",
+   "quote": "CAT. NO. 5015",
+   "note": "Micro miniature: one pad .135 [3.4] x .070 [1.8]. 5017 is the same part on a 5000-piece reel."
+  }
+ ],
+ "datasheet_url": "https://www.keyelco.com/userAssets/file/M65p55.pdf",
+ "datasheet_sha256": "ef1bf216e240986f5717bcd71309afdf5689f1eda962462b2b44cae4c8dae060",
+ "datasheet_rev": "Keystone catalogue M65, page 55 (no revision printed)",
+ "verification": {
+  "tier": "library",
+  "confirmations": 2,
+  "checked": [
+   {
+    "by": "author",
+    "date": "2026-10-07",
+    "pages": [
+     1
+    ],
+    "what": "single terminal, one pad/hole, no other metal"
+   },
+   {
+    "by": "second reader",
+    "date": "2026-10-07",
+    "pages": [
+     1
+    ],
+    "what": "5015 is the MICRO MINIATURE SMT test point (1000/reel), one .135 [3.4] x .070 [1.8] pad; 5017 is the same part at 5000/reel"
+   }
+  ]
+ },
+ "doubts": [
+  "Not in the Schematica catalogue (no Keystone test points are loaded); authored from the maker's catalogue page on request."
+ ],
+ "footprint": "TestPoint:TestPoint_Keystone_5015_Micro_Mini"
+}

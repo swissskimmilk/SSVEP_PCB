@@ -1,0 +1,72 @@
+{
+ "part_number": "TPS7A2033PDBVR",
+ "description": "TPS7A20 300 mA ultra-low-noise LDO, 3.3 V fixed, SOT-23-5",
+ "manufacturer": "Texas Instruments",
+ "reference_prefix": "U",
+ "package": "SOT-23-5 (DBV)",
+ "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+ "datasheet_url": "https://www.ti.com/lit/gpn/tps7a20",
+ "datasheet_rev": "SBVS338H",
+ "power": [
+  {
+   "name": "IN",
+   "numbers": [
+    "1"
+   ]
+  }
+ ],
+ "ground": [
+  {
+   "name": "GND",
+   "numbers": [
+    "2"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "role": "control",
+   "pins": [
+    [
+     "EN",
+     "3"
+    ]
+   ]
+  },
+  {
+   "role": "power_out",
+   "pins": [
+    {
+     "name": "OUT",
+     "numbers": [
+      "5"
+     ],
+     "type": "power_out"
+    }
+   ]
+  },
+  {
+   "role": "nc",
+   "pins": [
+    [
+     "NC",
+     "4"
+    ]
+   ]
+  }
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "page": 4,
+   "how": "read",
+   "quote": "Figure 4-4. DBV Package, 5-Pin SOT-23 (Top View): IN 1, GND 2, EN 3, N/C 4, OUT 5"
+  },
+  {
+   "field": "EN",
+   "page": 4,
+   "how": "read",
+   "quote": "This pin has an internal 500k pulldown resistor to hold the regulator off by default."
+  }
+ ]
+}

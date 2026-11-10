@@ -1,0 +1,18 @@
+(kicad_symbol_lib (version 20211014) (generator autosch)
+  (symbol "5015" (in_bom yes) (on_board yes)
+    (property "Reference" "TP" (at 0 6.35 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Value" "5015" (at 0 3.81 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Footprint" "TestPoint:TestPoint_Keystone_5015_Micro_Mini" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "5015_0_1"
+      (rectangle (start -12.70 2.54) (end 12.70 -2.54)
+        (stroke (width 0.254) (type default)) (fill (type background))))
+    (symbol "5015_1_1"
+      (pin passive line (at -15.24 0.00 0) (length 2.54)
+        (name "1" (effects (font (size 1.27 1.27))))
+        (number "1" (effects (font (size 1.27 1.27)))))
+    )
+  )
+)

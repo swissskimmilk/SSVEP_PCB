@@ -1,0 +1,630 @@
+{
+  "title": "ssvep_digital",
+  "summary": "Our half of the SSVEP board: POWER, MCU and PD (photodiode) pages. The ADC_* and PD_OUT ports run off this root to the partners' analog sheet, where the ADS131M08 lives; they are joined in the merge.",
+  "sheets": {
+    "MCU": {
+      "doc": {
+        "title": "mcu_power",
+        "summary": "Battery, power switch, low-noise analog LDO and the XIAO nRF52840 on one page. 1S protected LiPo on J1 (JST PH). SW1 is the main power switch in the battery line: off disconnects everything, so charging through the XIAO also needs SW1 on. After the switch the cell (VBAT) goes to the MCU page, where the charge-link jumper feeds the XIAO, and to U1. U1 (TPS7A2033, 7 uVrms) makes the partners' +3.3V analog rail directly from the cell; its EN has an internal 500k pulldown, so the analog side stays off until the MCU drives ANA_EN high. No boost converter anywhere: the LDO holds 3.3 V until the cell is near empty. U1 is a Seeed XIAO nRF52840, soldered by its castellated edge pads; the only underside pad used is VBAT (solder through a plated hole from the back). SPI to the ADS131M08 is on the XIAO's default SPI pins D8/D9/D10 with 33 ohm series resistors to slow the edges near the analog front end. D7 = CS, D6 = DRDY (interrupt), D5 = SYNC/RESET (pulled up so the ADC is not held in reset while the XIAO boots), D4 = ANA_EN for the analog LDO. The ADC master clock defaults to 8 MHz from D3 through R5; Y1 (8.192 MHz oscillator) with R6 and C1 is an unfitted alternative: fit Y1, C1, R6 and remove R5 to switch. D0-D2 (analog-capable) are spare. VBUS sensing needs no pin: VBUS reaches the nRF inside the module. FIRMWARE NOTE: when ANA_EN is low the ADC is unpowered, so drive every ADC-facing pin low or high-Z first, or the ADC back-powers through its input diodes.",
+        "components": [
+          {
+            "ref": "U1",
+            "mpn": "XIAO-nRF52840",
+            "value": "XIAO nRF52840",
+            "why": "BLE MCU module with charger, USB-C and bootloader; castellated so every joint can be inspected",
+            "nc": [
+              "D0",
+              "D1",
+              "D2",
+              "VBUS",
+              "3V3_OUT",
+              "SWDIO",
+              "SWCLK",
+              "~{RESET}",
+              "NFC1",
+              "NFC2"
+            ]
+          },
+          {
+            "ref": "R1",
+            "symbol": "R",
+            "value": "33",
+            "why": "SCLK series, at the XIAO",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R2",
+            "symbol": "R",
+            "value": "33",
+            "why": "DIN (MOSI) series, at the XIAO",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R3",
+            "symbol": "R",
+            "value": "33",
+            "why": "CS series, at the XIAO",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R4",
+            "symbol": "R",
+            "value": "33",
+            "why": "DOUT (MISO) series, at the ADC",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R5",
+            "symbol": "R",
+            "value": "33",
+            "why": "MCU-driven CLKIN (default). Remove when Y1 is fitted",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R6",
+            "symbol": "R",
+            "value": "33",
+            "dnp": true,
+            "why": "Y1 output to CLKIN; fit together with Y1",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0733RL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R7",
+            "symbol": "R",
+            "value": "10k",
+            "why": "SYNC/RESET pull-up: ADC runs while the XIAO pin floats at boot",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-0710KL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "Y1",
+            "mpn": "ECS-2520MVLC-081.92-CN-TR",
+            "value": "8.192MHz",
+            "dnp": true,
+            "why": "optional exact 8.192 MHz ADC clock",
+            "datasheet": "https://ecsxtal.com/store/pdf/ECS-2520MVLC.pdf"
+          },
+          {
+            "ref": "C1",
+            "symbol": "C",
+            "value": "100n",
+            "dnp": true,
+            "why": "Y1 decoupling",
+            "pins": {
+              "1": {
+                "place_near": "Y1.VDD",
+                "max_mm": 2.0
+              }
+            },
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "mpn": "CL21B104KBCNNNC",
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do"
+          },
+          {
+            "ref": "JP1",
+            "mpn": "solder-jumper-2",
+            "value": "0R",
+            "why": "CHG_LINK. Bridged: the XIAO charges the cell and runs from it. Cut: XIAO charger isolated, charge the cell externally"
+          },
+          {
+            "ref": "C2",
+            "symbol": "C",
+            "mpn": "CL21B105KBFVPJE",
+            "value": "1u",
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "why": "XIAO VBAT decoupling at the pad (the module has 2.2 uF inside too)",
+            "pins": {
+              "1": {
+                "place_near": "U1.VBAT",
+                "max_mm": 3.0
+              }
+            },
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+          },
+          {
+            "ref": "TP1",
+            "mpn": "5015",
+            "value": "VBAT"
+          },
+          {
+            "ref": "J1",
+            "mpn": "B2B-PH-K-S",
+            "value": "BATT",
+            "why": "1S LiPo connector. CHECK POLARITY of every pack: JST PH vendors disagree on which pin is +"
+          },
+          {
+            "ref": "SW1",
+            "mpn": "EG1218",
+            "value": "PWR",
+            "why": "main power switch; throw B unused",
+            "nc": [
+              "B"
+            ]
+          },
+          {
+            "ref": "U2",
+            "mpn": "TPS7A2033PDBVR",
+            "value": "TPS7A2033",
+            "why": "low-noise 3.3 V analog rail straight from the cell, no switching regulator",
+            "datasheet": "https://www.ti.com/lit/gpn/tps7a20",
+            "nc": [
+              "NC"
+            ]
+          },
+          {
+            "ref": "C4",
+            "symbol": "C",
+            "value": "1u",
+            "why": "LDO input capacitor, at the pin",
+            "pins": {
+              "1": {
+                "place_near": "U2.IN",
+                "max_mm": 2.0
+              }
+            },
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "mpn": "CL21B105KBFVPJE",
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+          },
+          {
+            "ref": "C5",
+            "symbol": "C",
+            "value": "1u",
+            "why": "LDO output capacitor (required for stability), at the pin",
+            "pins": {
+              "1": {
+                "place_near": "U2.OUT",
+                "max_mm": 2.0
+              }
+            },
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "mpn": "CL21B105KBFVPJE",
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+          },
+          {
+            "ref": "TP2",
+            "mpn": "5015",
+            "value": "+3.3V"
+          },
+          {
+            "ref": "TP3",
+            "mpn": "5015",
+            "value": "GND"
+          }
+        ],
+        "nets": {
+          "VBAT_XIAO": {
+            "kind": "power",
+            "voltage": 3.7,
+            "pins": [
+              "U1.VBAT",
+              "JP1.2",
+              "C2.1"
+            ]
+          },
+          "+3.3V": {
+            "kind": "power",
+            "voltage": 3.3,
+            "pins": [
+              "R7.2",
+              "Y1.VDD",
+              "Y1.TRI_STATE",
+              "C1.1",
+              "U2.OUT",
+              "C5.1",
+              "TP2.1"
+            ]
+          },
+          "GND": {
+            "kind": "ground",
+            "pins": [
+              "U1.GND",
+              "Y1.GND",
+              "C1.2",
+              "C2.2",
+              "J1.2",
+              "U2.GND",
+              "C4.2",
+              "C5.2",
+              "TP3.1"
+            ]
+          },
+          "MCU_SCLK": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 10,
+            "pins": [
+              "U1.D8",
+              "R1.1"
+            ]
+          },
+          "ADC_SCLK": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 10,
+            "pins": [
+              "R1.2"
+            ]
+          },
+          "MCU_MOSI": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 11,
+            "pins": [
+              "U1.D10",
+              "R2.1"
+            ]
+          },
+          "ADC_DIN": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 11,
+            "pins": [
+              "R2.2"
+            ]
+          },
+          "MCU_MISO": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 12,
+            "pins": [
+              "U1.D9",
+              "R4.2"
+            ]
+          },
+          "ADC_DOUT": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 12,
+            "pins": [
+              "R4.1"
+            ]
+          },
+          "MCU_CS": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 13,
+            "pins": [
+              "U1.D7",
+              "R3.1"
+            ]
+          },
+          "ADC_CS_N": {
+            "kind": "signal",
+            "protocol": "spi",
+            "priority": 13,
+            "pins": [
+              "R3.2"
+            ]
+          },
+          "ADC_DRDY_N": {
+            "kind": "signal",
+            "priority": 14,
+            "pins": [
+              "U1.D6"
+            ]
+          },
+          "ADC_SYNC_RESET_N": {
+            "kind": "signal",
+            "priority": 15,
+            "pins": [
+              "U1.D5",
+              "R7.1"
+            ]
+          },
+          "MCU_CLK": {
+            "kind": "signal",
+            "priority": 16,
+            "pins": [
+              "U1.D3",
+              "R5.1"
+            ]
+          },
+          "OSC_OUT": {
+            "kind": "signal",
+            "priority": 16,
+            "pins": [
+              "Y1.OUT",
+              "R6.1"
+            ]
+          },
+          "ADC_CLKIN": {
+            "kind": "signal",
+            "priority": 16,
+            "pins": [
+              "R5.2",
+              "R6.2"
+            ]
+          },
+          "ANA_EN": {
+            "kind": "signal",
+            "priority": 17,
+            "pins": [
+              "U1.D4",
+              "U2.EN"
+            ]
+          },
+          "VBAT": {
+            "kind": "power",
+            "voltage": 3.7,
+            "pins": [
+              "JP1.1",
+              "TP1.1",
+              "SW1.A",
+              "U2.IN",
+              "C4.1"
+            ]
+          },
+          "VBAT_RAW": {
+            "kind": "power",
+            "voltage": 3.7,
+            "pins": [
+              "J1.1",
+              "SW1.COM"
+            ]
+          }
+        },
+        "ports": {
+          "+3.3V": {
+            "dir": "out",
+            "current_ma": 300,
+            "note": "TPS7A20 rating; this board's analog side draws ~11.5 mA worst case"
+          },
+          "GND": {
+            "dir": "bidir"
+          },
+          "ADC_SCLK": {
+            "dir": "out"
+          },
+          "ADC_DIN": {
+            "dir": "out"
+          },
+          "ADC_DOUT": {
+            "dir": "in"
+          },
+          "ADC_CS_N": {
+            "dir": "out"
+          },
+          "ADC_DRDY_N": {
+            "dir": "in"
+          },
+          "ADC_SYNC_RESET_N": {
+            "dir": "out"
+          },
+          "ADC_CLKIN": {
+            "dir": "out"
+          }
+        }
+      }
+    },
+    "PD": {
+      "doc": {
+        "title": "photodiode",
+        "summary": "Screen-sync input. A BPW34 photodiode sits on the end of a twisted-pair cable (it is not on this board) plugged into J1, a 2-pin PicoBlade: pin 1 to the cathode, pin 2 to the anode. R1/C1 feed the reverse bias from the analog rail through a filter, so cable pickup cannot reach +3.3V. The photocurrent flows through R2 (1k, cable isolation) into R3 (load) with C2, a ~1 ms low-pass that smooths monitor backlight PWM. PD_OUT goes to a spare ADS131M08 channel, measured against GND, so every flash is sampled at the same instant as the EEG. Keep the white-patch level under the ADC's +1.2 V full scale: lower R3 if the screen is bright.",
+        "components": [
+          {
+            "ref": "J1",
+            "mpn": "0530470210",
+            "value": "PHOTODIODE",
+            "why": "photodiode cable: pin 1 = BPW34 cathode, pin 2 = BPW34 anode"
+          },
+          {
+            "ref": "R1",
+            "symbol": "R",
+            "value": "1k",
+            "why": "bias feed filter",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-071KL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "C1",
+            "symbol": "C",
+            "value": "100n",
+            "why": "bias feed filter, at J1",
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "mpn": "CL21B104KBCNNNC",
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do"
+          },
+          {
+            "ref": "R2",
+            "symbol": "R",
+            "value": "1k",
+            "why": "series isolation for the cable",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-071KL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "R3",
+            "symbol": "R",
+            "value": "100k",
+            "why": "photocurrent to voltage; ~10 uA white patch -> ~1 V. Tune to the screen",
+            "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+            "mpn": "RC0805FR-07100KL",
+            "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+          },
+          {
+            "ref": "C2",
+            "symbol": "C",
+            "value": "10n",
+            "why": "~1 ms smoothing of backlight PWM",
+            "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+            "mpn": "CL21C103JBF1PNE",
+            "datasheet": "https://product.samsungsem.com/mlcc/CL21C103JBF1PN.do"
+          }
+        ],
+        "nets": {
+          "+3.3V": {
+            "kind": "power",
+            "voltage": 3.3,
+            "pins": [
+              "R1.1"
+            ]
+          },
+          "GND": {
+            "kind": "ground",
+            "pins": [
+              "C1.2",
+              "R3.2",
+              "C2.2"
+            ]
+          },
+          "PD_BIAS": {
+            "kind": "signal",
+            "pins": [
+              "R1.2",
+              "C1.1",
+              "J1.1"
+            ]
+          },
+          "PD_SIG": {
+            "kind": "signal",
+            "pins": [
+              "J1.2",
+              "R2.1"
+            ]
+          },
+          "PD_OUT": {
+            "kind": "signal",
+            "pins": [
+              "R2.2",
+              "R3.1",
+              "C2.1"
+            ]
+          }
+        },
+        "ports": {
+          "+3.3V": {
+            "dir": "in",
+            "current_ma": 0.1
+          },
+          "GND": {
+            "dir": "bidir"
+          },
+          "PD_OUT": {
+            "dir": "out",
+            "needs": "a spare ADS131M08 AINxP, with its AINxN on GND"
+          }
+        }
+      }
+    }
+  },
+  "components": [],
+  "nets": {
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "pins": [
+        "MCU:+3.3V",
+        "PD:+3.3V"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "pins": [
+        "MCU:GND",
+        "PD:GND"
+      ]
+    },
+    "ADC_SCLK": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_SCLK"
+      ]
+    },
+    "ADC_DIN": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DIN"
+      ]
+    },
+    "ADC_DOUT": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_DOUT"
+      ]
+    },
+    "ADC_CS_N": {
+      "kind": "signal",
+      "protocol": "spi",
+      "pins": [
+        "MCU:ADC_CS_N"
+      ]
+    },
+    "ADC_DRDY_N": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_DRDY_N"
+      ]
+    },
+    "ADC_SYNC_RESET_N": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_SYNC_RESET_N"
+      ]
+    },
+    "ADC_CLKIN": {
+      "kind": "signal",
+      "pins": [
+        "MCU:ADC_CLKIN"
+      ]
+    },
+    "PD_OUT": {
+      "kind": "signal",
+      "pins": [
+        "PD:PD_OUT"
+      ]
+    }
+  },
+  "ports": {
+    "+3.3V": {
+      "dir": "out",
+      "current_ma": 300
+    },
+    "GND": {
+      "dir": "bidir"
+    },
+    "ADC_SCLK": {
+      "dir": "out"
+    },
+    "ADC_DIN": {
+      "dir": "out"
+    },
+    "ADC_DOUT": {
+      "dir": "in"
+    },
+    "ADC_CS_N": {
+      "dir": "out"
+    },
+    "ADC_DRDY_N": {
+      "dir": "in"
+    },
+    "ADC_SYNC_RESET_N": {
+      "dir": "out"
+    },
+    "ADC_CLKIN": {
+      "dir": "out"
+    },
+    "PD_OUT": {
+      "dir": "out"
+    }
+  },
+  "note": "GENERATED from ours.circuit.json with each sheet inlined (the MCP build has no base directory). Edit the source files, not this."
+}

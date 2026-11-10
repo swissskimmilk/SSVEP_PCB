@@ -1,0 +1,387 @@
+{
+ "note": "Worst-case DC currents for the SSVEP board, for the DC/IR-drop check after layout. Currents are the datasheet MAX where one is given. Battery life is a separate (average) estimate in the summary, not this table.",
+ "pins": [
+  {
+   "pins": [
+    "MCU:J1.1"
+   ],
+   "dir": "source",
+   "volts": 3.7,
+   "basis": "1S LiPo, 3.7 V nominal (4.2 V full, ~3.35 V where the 3.3 V LDO starts to drop out)"
+  },
+  {
+   "pins": [
+    "MCU:Q1.D"
+   ],
+   "dir": "sink",
+   "amps": 0.0565,
+   "basis": "everything after the reverse-battery FET: the same 56.5 mA the switch carries (SW1.COM below). Charging runs the other way, up to 100 mA into the cell"
+  },
+  {
+   "pins": [
+    "MCU:Q1.S"
+   ],
+   "dir": "source",
+   "volts": 3.7,
+   "max_amps": 3.1,
+   "basis": "SI2301CDS on: ID -3.1 A continuous at TA 25 C (Vishay 68741). 0.142 ohm max at VGS -2.5 V, so 8 mV at 56.5 mA"
+  },
+  {
+   "pins": [
+    "MCU:SW1.COM"
+   ],
+   "dir": "sink",
+   "amps": 0.0565,
+   "basis": "everything after the switch: XIAO 45 mA + analog LDO input 11.49 mA (computed below)"
+  },
+  {
+   "pins": [
+    "MCU:SW1.A"
+   ],
+   "dir": "source",
+   "volts": 3.7,
+   "max_amps": 0.2,
+   "basis": "EG1218 contact rating 200 mA (E-Switch EG catalog p.187: 'SPDT 200MA 30V'). Charging also flows here: up to 100 mA INTO the cell (XIAO BQ25101 at 100 mA setting)"
+  },
+  {
+   "pins": [
+    "MCU:TP1.1"
+   ],
+   "dir": "sink",
+   "amps": 0,
+   "basis": "test point, no load"
+  },
+  {
+   "pins": [
+    "MCU:TP2.1"
+   ],
+   "dir": "sink",
+   "amps": 0,
+   "basis": "test point, no load"
+  },
+  {
+   "pins": [
+    "MCU:U1.VBUS"
+   ],
+   "dir": "source",
+   "volts": 5.0,
+   "max_amps": 0.5,
+   "basis": "XIAO 5V pad = USB VBUS when a cable is in; feeds R10 only, which is not fitted by default"
+  },
+  {
+   "pins": [
+    "MCU:R9.2"
+   ],
+   "dir": "sink",
+   "amps": 0.01149,
+   "basis": "the analog LDO's input current (U2.IN below), through the fitted 0 ohm R9 from the cell"
+  },
+  {
+   "pins": [
+    "MCU:R9.1"
+   ],
+   "dir": "source",
+   "volts": 3.7,
+   "max_amps": 2.0,
+   "basis": "0805 0 ohm jumper (Yageo RC: 50 mohm max, 2 A rated); 3.7 V from the cell"
+  },
+  {
+   "pins": [
+    "MCU:R10.1"
+   ],
+   "dir": "sink",
+   "amps": 0,
+   "basis": "R10 (USB -> LDO_IN) not fitted by default"
+  },
+  {
+   "pins": [
+    "MCU:R10.2"
+   ],
+   "dir": "sink",
+   "amps": 0,
+   "basis": "R10 not fitted: carries nothing into LDO_IN"
+  },
+  {
+   "pins": [
+    "MCU:U2.OUT"
+   ],
+   "dir": "source",
+   "volts": 3.3,
+   "max_amps": 0.25,
+   "basis": "LP5907MFX-3.3 fixed 3.3 V output, 250 mA rated (LP5907 datasheet SNVS798Q p.4)"
+  },
+  {
+   "pins": [
+    "MCU:U2.IN"
+   ],
+   "dir": "sink",
+   "amps": 0.01149,
+   "basis": "output load 11.48 mA (sum of the +3.3V loads below) + IGND 10 uA max at no load (SBVS338H 5.5 Electrical Characteristics: IGND 6.5 typ / 10 max uA)"
+  },
+  {
+   "pins": [
+    "MCU:U1.VBAT"
+   ],
+   "dir": "sink",
+   "amps": 0.045,
+   "basis": "XIAO nRF52840 worst case DC: radio TX +8 dBm on the internal LDO (DC/DC off for low noise) 32.7 mA (nRF52840 PS v1.5 ITX,PLUS8dBM) + CPU from flash on LDO 6.3 mA (ICPU1) + module LDO, flash and LED allowance ~6 mA. Average while streaming is far lower (see summary)"
+  },
+  {
+   "pins": [
+    "ANALOG:U1.V+"
+   ],
+   "dir": "sink",
+   "amps": 7.5e-05,
+   "basis": "INA333 quiescent current 50 typ / 75 max uA (SBOS445 6.5 Electrical Characteristics)"
+  },
+  {
+   "pins": [
+    "ANALOG:U2.V+"
+   ],
+   "dir": "sink",
+   "amps": 7.5e-05,
+   "basis": "INA333 IQ 75 uA max"
+  },
+  {
+   "pins": [
+    "ANALOG:U3.V+"
+   ],
+   "dir": "sink",
+   "amps": 7.5e-05,
+   "basis": "INA333 IQ 75 uA max"
+  },
+  {
+   "pins": [
+    "ANALOG:U4.V+"
+   ],
+   "dir": "sink",
+   "amps": 7.5e-05,
+   "basis": "INA333 IQ 75 uA max"
+  },
+  {
+   "pins": [
+    "ANALOG:U5.15"
+   ],
+   "dir": "sink",
+   "amps": 0.0077,
+   "basis": "ADS131M08 IAVDD high-resolution mode, all 8 channels: 6.5 typ / 7.7 max mA (datasheet 6.5 Electrical Characteristics p.9). Low-power mode is 4.1 mA max. Pin 27 is NC on the PBS package (Table 5-1), not a second AVDD"
+  },
+  {
+   "pins": [
+    "ANALOG:U5.IOVDD"
+   ],
+   "dir": "sink",
+   "amps": 0.0009,
+   "basis": "ADS131M08 IDVDD high-resolution mode 0.66 typ / 0.9 max mA (p.9); decoupled by C43 1 uF at the pin"
+  },
+  {
+   "pins": [
+    "ANALOG:U6.VDD"
+   ],
+   "dir": "sink",
+   "amps": 0.00034,
+   "basis": "MCP6002 IQ per amplifier 170 uA max x 2 amplifiers (DS21733 DC Electrical Specifications; spec at 5.5 V, so pessimistic at 3.3 V)"
+  },
+  {
+   "pins": [
+    "MCU:Y1.VDD"
+   ],
+   "dir": "sink",
+   "amps": 0.0018,
+   "basis": "ECS-2520MVLC current consumption at 3.3 V: 1.8 mA max at 20 MHz, the lowest frequency listed (8.192 MHz draws less). Y1 is not fitted by default"
+  },
+  {
+   "pins": [
+    "PD:R1.1"
+   ],
+   "dir": "sink",
+   "amps": 0.0001,
+   "basis": "photodiode bias: only the BPW34 photocurrent flows (tens of uA against a screen); 100 uA allowed. V/R would be 3.3 mA, which this circuit cannot draw"
+  },
+  {
+   "pins": [
+    "ANALOG:U5.AGND",
+    "ANALOG:U5.AGND_REFGND"
+   ],
+   "dir": "return",
+   "amps": 0.0077,
+   "basis": "ADS131M08 analog ground returns IAVDD (7.7 mA max)"
+  },
+  {
+   "pins": [
+    "ANALOG:U5.DGND"
+   ],
+   "dir": "return",
+   "amps": 0.0009,
+   "basis": "ADS131M08 digital ground returns IDVDD (0.9 mA max)"
+  },
+  {
+   "pins": [
+    "ANALOG:U5.AIN4N",
+    "ANALOG:U5.AIN5N",
+    "ANALOG:U5.AIN5P",
+    "ANALOG:U5.AIN6P",
+    "ANALOG:U5.AIN6N",
+    "ANALOG:U5.AIN7N",
+    "ANALOG:U5.AIN7P"
+   ],
+   "dir": "return",
+   "amps": 0,
+   "basis": "unused ADC inputs strapped to ground: input leakage only"
+  }
+ ],
+ "capacitors": [
+  {
+   "refs": [
+    "MCU:C4"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 5.25,
+   "basis": "CL21B105KAFNNNE, 1 uF 25 V X7R 0805 (LDO input, on LDO_IN); sees up to 4.2 V on a full cell, or 5.25 V when R10 is fitted instead of R9 (USB)"
+  },
+  {
+   "refs": [
+    "MCU:C2"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 4.2,
+   "basis": "CL21B105KAFNNNE, 1 uF 25 V X7R 0805; on the cell, up to 4.2 V"
+  },
+  {
+   "refs": [
+    "MCU:C5"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "basis": "CL21B105KAFNNNE, 1 uF 25 V X7R 0805"
+  },
+  {
+   "refs": [
+    "MCU:C1",
+    "PD:C1"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "CL21B104KBCNNNC, 100 nF 50 V X7R 0805"
+  },
+  {
+   "refs": [
+    "PD:C2"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "CL21C103JBF1PNE, 10 nF 50 V C0G 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C2",
+    "ANALOG:C4",
+    "ANALOG:C10",
+    "ANALOG:C18",
+    "ANALOG:C20"
+   ],
+   "voltage_rating": 35,
+   "type": "film",
+   "volts": 3.3,
+   "basis": "Rubycon 35MF154KZ22012, 0.15 uF 35 Vdc polymer multilayer film, 0805 (MF series table)"
+  },
+  {
+   "refs": [
+    "ANALOG:C9",
+    "ANALOG:C11",
+    "ANALOG:C13",
+    "ANALOG:C15",
+    "ANALOG:C21",
+    "ANALOG:C22",
+    "ANALOG:C23",
+    "ANALOG:C24"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "KYOCERA AVX KGM21ER71H154KU, 150 nF 50 V X7R 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C1",
+    "ANALOG:C3",
+    "ANALOG:C7",
+    "ANALOG:C12",
+    "ANALOG:C14"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "Samsung CL21C102JBC1PNC, 1 nF 50 V C0G 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C5",
+    "ANALOG:C8",
+    "ANALOG:C16",
+    "ANALOG:C17",
+    "ANALOG:C19"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "Samsung CL21C103JBF1PNE, 10 nF 50 V C0G 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C25",
+    "ANALOG:C27",
+    "ANALOG:C28",
+    "ANALOG:C29",
+    "ANALOG:C30",
+    "ANALOG:C31",
+    "ANALOG:C32",
+    "ANALOG:C33",
+    "ANALOG:C34",
+    "ANALOG:C36",
+    "ANALOG:C37",
+    "ANALOG:C38",
+    "ANALOG:C39",
+    "ANALOG:C40",
+    "ANALOG:C42"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "Samsung CL21B104KBCNNNC, 100 nF 50 V X7R 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C26",
+    "ANALOG:C41",
+    "ANALOG:C43"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "Samsung CL21B105KAFNNNE, 1 uF 25 V X7R 0805"
+  },
+  {
+   "refs": [
+    "ANALOG:C35"
+   ],
+   "voltage_rating": 50,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "Samsung CL21B224KBFVPNE, 220 nF 50 V X7R 0805 (ADC LDOCAP)"
+  },
+  {
+   "refs": [
+    "ANALOG:C6"
+   ],
+   "voltage_rating": 16,
+   "type": "ceramic",
+   "volts": 3.3,
+   "basis": "TDK C2012X5R1E106K125AB, 10 uF 25 V X5R 0805"
+  }
+ ]
+}

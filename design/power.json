@@ -1,0 +1,244 @@
+{
+ "version": 1,
+ "nets": {
+  "+3.3V": {
+   "kind": "power",
+   "volts": 3.3,
+   "sources": [
+    {
+     "ref": "MCU:U2",
+     "pad": "5",
+     "volts": 3.3
+    }
+   ],
+   "loads": [
+    {
+     "ref": "ANALOG:U1",
+     "pad": "7",
+     "amps": 7.5e-05,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U2",
+     "pad": "7",
+     "amps": 7.5e-05,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U3",
+     "pad": "7",
+     "amps": 7.5e-05,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U4",
+     "pad": "7",
+     "amps": 7.5e-05,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U5",
+     "pad": "15",
+     "amps": 0.00385,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U5",
+     "pad": "27",
+     "amps": 0.00385,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U5",
+     "pad": "26",
+     "amps": 0.0009,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U6",
+     "pad": "8",
+     "amps": 0.00034,
+     "how": "stated"
+    },
+    {
+     "ref": "MCU:Y1",
+     "pad": "4",
+     "amps": 0.0018,
+     "how": "stated"
+    },
+    {
+     "ref": "PD:R1",
+     "pad": "1",
+     "amps": 0.0001,
+     "how": "stated"
+    },
+    {
+     "ref": "MCU:R7",
+     "pad": "2",
+     "amps": 0.00033,
+     "how": "ohms"
+    },
+    {
+     "ref": "ANALOG:R25",
+     "pad": "1",
+     "amps": 1.1e-05,
+     "how": "ohms"
+    }
+   ]
+  },
+  "GND": {
+   "kind": "ground",
+   "volts": 0.0,
+   "sources": [
+    {
+     "ref": "MCU:J1",
+     "pad": "2",
+     "volts": 0.0
+    }
+   ],
+   "loads": [
+    {
+     "ref": "ANALOG:U5",
+     "pad": "28",
+     "amps": -0.00385,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U5",
+     "pad": "13",
+     "amps": -0.00385,
+     "how": "stated"
+    },
+    {
+     "ref": "ANALOG:U5",
+     "pad": "25",
+     "amps": -0.0009,
+     "how": "stated"
+    },
+    {
+     "ref": "MCU:U1",
+     "pad": "13",
+     "amps": -0.015,
+     "how": "kcl"
+    },
+    {
+     "ref": "MCU:U1",
+     "pad": "18",
+     "amps": -0.015,
+     "how": "kcl"
+    },
+    {
+     "ref": "MCU:U1",
+     "pad": "20",
+     "amps": -0.015,
+     "how": "kcl"
+    },
+    {
+     "ref": "MCU:Y1",
+     "pad": "2",
+     "amps": -0.0018,
+     "how": "kcl"
+    },
+    {
+     "ref": "MCU:U2",
+     "pad": "2",
+     "amps": -9.000000000000327e-06,
+     "how": "kcl"
+    },
+    {
+     "ref": "ANALOG:U1",
+     "pad": "4",
+     "amps": -7.5e-05,
+     "how": "kcl"
+    },
+    {
+     "ref": "ANALOG:U2",
+     "pad": "4",
+     "amps": -7.5e-05,
+     "how": "kcl"
+    },
+    {
+     "ref": "ANALOG:U3",
+     "pad": "4",
+     "amps": -7.5e-05,
+     "how": "kcl"
+    },
+    {
+     "ref": "ANALOG:U4",
+     "pad": "4",
+     "amps": -7.5e-05,
+     "how": "kcl"
+    },
+    {
+     "ref": "ANALOG:U6",
+     "pad": "4",
+     "amps": -0.00034,
+     "how": "kcl"
+    }
+   ]
+  },
+  "MCU:VBAT_XIAO": {
+   "kind": "power",
+   "volts": 3.7,
+   "sources": [
+    {
+     "ref": "MCU:JP1",
+     "pad": "2",
+     "volts": 3.7
+    }
+   ],
+   "loads": [
+    {
+     "ref": "MCU:U1",
+     "pad": "19",
+     "amps": 0.045,
+     "how": "stated"
+    }
+   ]
+  },
+  "MCU:VBAT": {
+   "kind": "power",
+   "volts": 3.7,
+   "sources": [
+    {
+     "ref": "MCU:SW1",
+     "pad": "1",
+     "volts": 3.7
+    }
+   ],
+   "loads": [
+    {
+     "ref": "MCU:U2",
+     "pad": "1",
+     "amps": 0.01149,
+     "how": "stated"
+    },
+    {
+     "ref": "MCU:JP1",
+     "pad": "1",
+     "amps": 0.045,
+     "how": "through"
+    }
+   ]
+  },
+  "MCU:VBAT_RAW": {
+   "kind": "power",
+   "volts": 3.7,
+   "sources": [
+    {
+     "ref": "MCU:J1",
+     "pad": "1",
+     "volts": 3.7
+    }
+   ],
+   "loads": [
+    {
+     "ref": "MCU:SW1",
+     "pad": "2",
+     "amps": 0.0565,
+     "how": "stated"
+    }
+   ]
+  }
+ }
+}

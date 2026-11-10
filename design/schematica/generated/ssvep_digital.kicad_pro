@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "filename": "ssvep_digital.kicad_pro",
+    "version": 1
+  },
+  "sheets": [
+    [
+      "1000327a-f837-4419-93bb-557d45e0b94f",
+      "Root"
+    ],
+    [
+      "9b1cb211-fc53-5351-aef4-0b06f2d9fa18",
+      "MCU"
+    ],
+    [
+      "a27434e7-21ee-53c0-bc47-dcc002bedfb7",
+      "PD"
+    ]
+  ]
+}

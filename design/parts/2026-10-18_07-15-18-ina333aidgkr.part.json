@@ -1,0 +1,67 @@
+{
+ "part_number": "2026-10-18_07-15-18:INA333AIDGKR",
+ "reference_prefix": "U",
+ "source_symbol": "2026-10-18_07-15-18:INA333AIDGKR",
+ "package": "footprints:DGK0008A-IPC_A",
+ "datasheet_url": "https://www.ti.com/lit/gpn/ina333",
+ "groups": [
+  {
+   "role": "power",
+   "pins": [
+    [
+     "V+",
+     "7"
+    ]
+   ]
+  },
+  {
+   "role": "ground",
+   "pins": [
+    [
+     "V-",
+     "4"
+    ]
+   ]
+  },
+  {
+   "role": "input",
+   "pins": [
+    [
+     "VIN-",
+     "2"
+    ],
+    [
+     "VIN+",
+     "3"
+    ]
+   ]
+  },
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "1_RG",
+     "1"
+    ],
+    [
+     "2_RG",
+     "8"
+    ],
+    [
+     "REF",
+     "5"
+    ]
+   ]
+  },
+  {
+   "role": "output",
+   "pins": [
+    [
+     "VOUT",
+     "6"
+    ]
+   ]
+  }
+ ],
+ "notes": "Roles corrected from the Ultra Librarian symbol (V- was 'power', VIN tri_state, VOUT unspecified) per INA333 pin functions."
+}

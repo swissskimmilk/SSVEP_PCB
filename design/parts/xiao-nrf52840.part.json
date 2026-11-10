@@ -1,0 +1,160 @@
+{
+ "part_number": "XIAO-nRF52840",
+ "description": "Seeed Studio XIAO nRF52840 module (plain), castellated SMD mount",
+ "manufacturer": "Seeed Studio",
+ "reference_prefix": "U",
+ "package": "Seeed XIAO SMD, 14 castellated edge pads + 8 underside pads",
+ "footprint": "SSVEP:XIAO-nRF52840-SMD_VBAT-hole",
+ "datasheet_url": "https://wiki.seeedstudio.com/XIAO_BLE/",
+ "power": [
+  {
+   "name": "VBAT",
+   "numbers": [
+    "19"
+   ]
+  }
+ ],
+ "ground": [
+  {
+   "name": "GND",
+   "numbers": [
+    "13",
+    "18",
+    "20"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "role": "io",
+   "pins": [
+    [
+     "D0",
+     "1"
+    ],
+    [
+     "D1",
+     "2"
+    ],
+    [
+     "D2",
+     "3"
+    ],
+    [
+     "D3",
+     "4"
+    ],
+    [
+     "D4",
+     "5"
+    ],
+    [
+     "D5",
+     "6"
+    ]
+   ]
+  },
+  {
+   "role": "io",
+   "pins": [
+    [
+     "D6",
+     "7"
+    ]
+   ]
+  },
+  {
+   "role": "io",
+   "pins": [
+    [
+     "D7",
+     "8"
+    ],
+    [
+     "D8",
+     "9"
+    ],
+    [
+     "D9",
+     "10"
+    ],
+    [
+     "D10",
+     "11"
+    ]
+   ],
+   "side": "right"
+  },
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "VBUS",
+     "14"
+    ],
+    [
+     "3V3_OUT",
+     "12"
+    ]
+   ]
+  },
+  {
+   "role": "io",
+   "pins": [
+    [
+     "SWDIO",
+     "15"
+    ]
+   ]
+  },
+  {
+   "role": "clock",
+   "pins": [
+    [
+     "SWCLK",
+     "16"
+    ]
+   ]
+  },
+  {
+   "role": "reset",
+   "pins": [
+    [
+     "~{RESET}",
+     "17"
+    ]
+   ]
+  },
+  {
+   "role": "io",
+   "pins": [
+    [
+     "NFC1",
+     "21"
+    ],
+    [
+     "NFC2",
+     "22"
+    ]
+   ]
+  }
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "how": "read",
+   "source": "Seeed XIAO_Series_SCH_Symbols.zip, symbol XIAO-nRF52840-SMD (pads 1-22), matching footprint XIAO-nRF52840-SMD.kicad_mod pads 1-22"
+  },
+  {
+   "field": "roles",
+   "how": "read",
+   "source": "Seeed XIAO nRF52840 v1.2 KiCad schematic (260828): VBAT pad = BAT0 on charger output, VBUS = USB-C VBUS (in/out), 3V3_OUT = SGM2040 LDO output, pad 17 'EN' = TP2 on P0.18/RESET, pads 15/16 = SWDIO/SWCLK test points"
+  },
+  {
+   "field": "D-pin map",
+   "how": "read",
+   "source": "wiki: D0 P0.02, D1 P0.03, D2 P0.28, D3 P0.29, D4 P0.04, D5 P0.05 (analog AIN0-5); D6 P1.11, D7 P1.12, D8 P1.13 SCK, D9 P1.14 MISO, D10 P1.15 MOSI"
+  }
+ ],
+ "notes": "VBUS and 3V3_OUT are marked passive (not power) because both are bidirectional on the module and are deliberately left unconnected on this board. Pads 15-22 are on the module underside."
+}

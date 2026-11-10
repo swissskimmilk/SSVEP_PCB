@@ -1,0 +1,40 @@
+{
+  "part_number": "2026-10-18_21-21-43:MCP6002-I_SN",
+  "reference_prefix": "U",
+  "source_symbol": "2026-10-18_21-21-43:MCP6002-I_SN",
+  "package": "footprints_4:SOIC8-N_MC_MCH",
+  "datasheet_url": "MCP6002-I/SN",
+  "groups": [
+    {
+      "role": "input",
+      "pins": [
+        ["VINA-", "2"],
+        ["VINA+", "3"],
+        ["VINB+", "5"],
+        ["VINB-", "6"]
+      ]
+    },
+    {
+      "role": "output",
+      "pins": [
+        ["VOUTA", "1"],
+        ["VOUTB", "7"]
+      ]
+    },
+    {
+      "role": "passive",
+      "pins": [
+        {
+          "name": "VSS",
+          "numbers": ["4"],
+          "type": "unspecified"
+        },
+        {
+          "name": "VDD",
+          "numbers": ["8"],
+          "type": "unspecified"
+        }
+      ]
+    }
+  ]
+}

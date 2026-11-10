@@ -1,0 +1,110 @@
+{
+  "title": "photodiode",
+  "summary": "Screen-sync input. A BPW34 photodiode sits on the end of a twisted-pair cable (it is not on this board) plugged into J1, a 2-pin JST PH (the same connector as the battery): pin 1 to the cathode, pin 2 to the anode. R1/C1 feed the reverse bias from the analog rail through a filter, so cable pickup cannot reach +3.3V. The photocurrent flows through R2 (1k, cable isolation) into R3 (load) with C2, a ~1 ms low-pass that smooths monitor backlight PWM. PD_OUT goes to a spare ADS131M08 channel, measured against GND, so every flash is sampled at the same instant as the EEG. Keep the white-patch level under the ADC's +1.2 V full scale: lower R3 if the screen is bright.",
+  "components": [
+    {
+      "ref": "J1",
+      "mpn": "B2B-PH-K-S",
+      "value": "SYNC_CABLE",
+      "why": "2-pin cable to the BPW34 photodiode taped to the screen: pin 1 = cathode, pin 2 = anode"
+    },
+    {
+      "ref": "R1",
+      "symbol": "R",
+      "value": "1k",
+      "why": "bias feed filter",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-071KL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "C1",
+      "symbol": "C",
+      "value": "100n",
+      "why": "bias feed filter, at J1",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B104KBCNNNC",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do"
+    },
+    {
+      "ref": "R2",
+      "symbol": "R",
+      "value": "1k",
+      "why": "series isolation for the cable",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-071KL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "R3",
+      "symbol": "R",
+      "value": "100k",
+      "why": "photocurrent to voltage; ~10 uA white patch -> ~1 V. Tune to the screen",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder",
+      "mpn": "RC0805FR-07100KL",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf"
+    },
+    {
+      "ref": "C2",
+      "symbol": "C",
+      "value": "10n",
+      "why": "~1 ms smoothing of backlight PWM",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21C103JBF1PNE",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21C103JBF1PN.do"
+    }
+  ],
+  "nets": {
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "pins": [
+        "R1.1"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "pins": [
+        "C1.2",
+        "R3.2",
+        "C2.2"
+      ]
+    },
+    "PD_BIAS": {
+      "kind": "signal",
+      "pins": [
+        "R1.2",
+        "C1.1",
+        "J1.1"
+      ]
+    },
+    "PD_SIG": {
+      "kind": "signal",
+      "pins": [
+        "J1.2",
+        "R2.1"
+      ]
+    },
+    "PD_OUT": {
+      "kind": "signal",
+      "pins": [
+        "R2.2",
+        "R3.1",
+        "C2.1"
+      ]
+    }
+  },
+  "ports": {
+    "+3.3V": {
+      "dir": "in",
+      "current_ma": 0.1
+    },
+    "GND": {
+      "dir": "bidir"
+    },
+    "PD_OUT": {
+      "dir": "out",
+      "needs": "a spare ADS131M08 AINxP, with its AINxN on GND"
+    }
+  }
+}

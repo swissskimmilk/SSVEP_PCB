@@ -1,0 +1,53 @@
+{
+ "part_number": "ECS-2520MVLC-081.92-CN-TR",
+ "description": "8.192 MHz CMOS oscillator, 2.5 x 2.0 mm, MultiVolt low current",
+ "manufacturer": "ECS Inc.",
+ "reference_prefix": "Y",
+ "package": "2520 4-SMD",
+ "footprint": "Oscillator:Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm",
+ "datasheet_url": "https://ecsxtal.com/store/pdf/ECS-2520MVLC.pdf",
+ "power": [
+  {
+   "name": "VDD",
+   "numbers": [
+    "4"
+   ]
+  }
+ ],
+ "ground": [
+  {
+   "name": "GND",
+   "numbers": [
+    "2"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "role": "control",
+   "pins": [
+    [
+     "TRI_STATE",
+     "1"
+    ]
+   ]
+  },
+  {
+   "role": "output",
+   "pins": [
+    [
+     "OUT",
+     "3"
+    ]
+   ]
+  }
+ ],
+ "extracted_from": [
+  {
+   "field": "pins",
+   "page": 1,
+   "how": "read",
+   "quote": "1 Tri-state, 2 Gnd, 3 Output, 4 Vdd; Pin 1: 0.7*Vdd min or NC = Active, 0.3*Vdd max = High Impedance"
+  }
+ ]
+}

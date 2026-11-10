@@ -1,0 +1,136 @@
+{
+  "title": "power",
+  "summary": "1S protected LiPo on J1 (JST PH). SW1 is the main power switch in the battery line: off disconnects everything, so charging through the XIAO also needs SW1 on. After the switch the cell (VBAT) goes to the MCU page, where the charge-link jumper feeds the XIAO, and to U1. U1 (TPS7A2033, 7 uVrms) makes the partners' +3.3V analog rail directly from the cell; its EN has an internal 500k pulldown, so the analog side stays off until the MCU drives ANA_EN high. No boost converter anywhere: the LDO holds 3.3 V until the cell is near empty.",
+  "components": [
+    {
+      "ref": "J1",
+      "mpn": "B2B-PH-K-S",
+      "value": "BATT",
+      "why": "1S LiPo connector. CHECK POLARITY of every pack: JST PH vendors disagree on which pin is +"
+    },
+    {
+      "ref": "SW1",
+      "mpn": "EG1218",
+      "value": "PWR",
+      "why": "main power switch; throw B unused",
+      "nc": [
+        "B"
+      ]
+    },
+    {
+      "ref": "U1",
+      "mpn": "LP5907MFX-3.3/NOPB",
+      "value": "LP5907MFX-3.3",
+      "why": "low-noise 3.3 V analog rail straight from the cell, no switching regulator",
+      "datasheet": "https://www.ti.com/lit/gpn/lp5907",
+      "nc": [
+        "NC"
+      ]
+    },
+    {
+      "ref": "C1",
+      "symbol": "C",
+      "value": "1u",
+      "why": "LDO input capacitor, at the pin",
+      "pins": {
+        "1": {
+          "place_near": "U1.IN",
+          "max_mm": 2.0
+        }
+      },
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B105KAFNNNE",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+    },
+    {
+      "ref": "C2",
+      "symbol": "C",
+      "value": "1u",
+      "why": "LDO output capacitor (required for stability), at the pin",
+      "pins": {
+        "1": {
+          "place_near": "U1.OUT",
+          "max_mm": 2.0
+        }
+      },
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder",
+      "mpn": "CL21B105KAFNNNE",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B105KBFVPJ.do"
+    },
+    {
+      "ref": "TP2",
+      "mpn": "5015",
+      "value": "+3.3V"
+    },
+    {
+      "ref": "TP3",
+      "mpn": "5015",
+      "value": "GND"
+    }
+  ],
+  "nets": {
+    "VBAT_RAW": {
+      "kind": "power",
+      "voltage": 3.7,
+      "pins": [
+        "J1.1",
+        "SW1.COM"
+      ]
+    },
+    "VBAT": {
+      "kind": "power",
+      "voltage": 3.7,
+      "priority": 1,
+      "pins": [
+        "SW1.A",
+        "U1.IN",
+        "C1.1"
+      ]
+    },
+    "+3.3V": {
+      "kind": "power",
+      "voltage": 3.3,
+      "priority": 2,
+      "pins": [
+        "U1.OUT",
+        "C2.1",
+        "TP2.1"
+      ]
+    },
+    "GND": {
+      "kind": "ground",
+      "priority": 3,
+      "pins": [
+        "J1.2",
+        "U1.GND",
+        "C1.2",
+        "C2.2",
+        "TP3.1"
+      ]
+    },
+    "ANA_EN": {
+      "kind": "signal",
+      "pins": [
+        "U1.EN"
+      ]
+    }
+  },
+  "ports": {
+    "+3.3V": {
+      "dir": "out",
+      "current_ma": 300,
+      "note": "TPS7A20 rating; the analog side draws about 3 mA"
+    },
+    "GND": {
+      "dir": "bidir"
+    },
+    "ANA_EN": {
+      "dir": "in",
+      "needs": "logic high (>= VEN(HI)) to enable; floating = off"
+    },
+    "VBAT": {
+      "dir": "out",
+      "note": "switched cell, to the XIAO via the charge-link jumper"
+    }
+  }
+}

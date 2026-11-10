@@ -1,0 +1,152 @@
+{
+ "version": 1,
+ "near": [
+  {
+   "ref": "MCU:C3",
+   "pin": "1",
+   "pads": [
+    "1"
+   ],
+   "to": {
+    "ref": "MCU:Y1",
+    "pin": "VDD",
+    "pads": [
+     "4"
+    ]
+   },
+   "why": "place_near MCU:Y1.VDD",
+   "max_mm": 2.0
+  },
+  {
+   "ref": "MCU:C6",
+   "pin": "1",
+   "pads": [
+    "1"
+   ],
+   "to": {
+    "ref": "MCU:U2",
+    "pin": "VBAT",
+    "pads": [
+     "19"
+    ]
+   },
+   "why": "place_near MCU:U2.VBAT",
+   "max_mm": 3.0
+  },
+  {
+   "ref": "MCU:C7",
+   "pin": "1",
+   "pads": [
+    "1"
+   ],
+   "to": {
+    "ref": "MCU:U3",
+    "pin": "IN",
+    "pads": [
+     "1"
+    ]
+   },
+   "why": "place_near MCU:U3.IN",
+   "max_mm": 2.0
+  },
+  {
+   "ref": "MCU:C8",
+   "pin": "1",
+   "pads": [
+    "1"
+   ],
+   "to": {
+    "ref": "MCU:U3",
+    "pin": "OUT",
+    "pads": [
+     "5"
+    ]
+   },
+   "why": "place_near MCU:U3.OUT",
+   "max_mm": 2.0
+  }
+ ],
+ "nets": {
+  "+3.3V": {
+   "kind": "power"
+  },
+  "GND": {
+   "kind": "ground"
+  },
+  "ADC_SCLK": {
+   "kind": "signal",
+   "protocol": "spi"
+  },
+  "ADC_DIN": {
+   "kind": "signal",
+   "protocol": "spi"
+  },
+  "ADC_DOUT": {
+   "kind": "signal",
+   "protocol": "spi"
+  },
+  "ADC_CS_N": {
+   "kind": "signal",
+   "protocol": "spi"
+  },
+  "ADC_DRDY_N": {
+   "kind": "signal"
+  },
+  "ADC_SYNC_RESET_N": {
+   "kind": "signal"
+  },
+  "ADC_CLKIN": {
+   "kind": "signal"
+  },
+  "PD_OUT": {
+   "kind": "signal"
+  },
+  "MCU:VBAT_XIAO": {
+   "kind": "power"
+  },
+  "MCU:MCU_SCLK": {
+   "kind": "signal",
+   "priority": 10,
+   "protocol": "spi"
+  },
+  "MCU:MCU_MOSI": {
+   "kind": "signal",
+   "priority": 11,
+   "protocol": "spi"
+  },
+  "MCU:MCU_MISO": {
+   "kind": "signal",
+   "priority": 12,
+   "protocol": "spi"
+  },
+  "MCU:MCU_CS": {
+   "kind": "signal",
+   "priority": 13,
+   "protocol": "spi"
+  },
+  "MCU:MCU_CLK": {
+   "kind": "signal",
+   "priority": 16
+  },
+  "MCU:OSC_OUT": {
+   "kind": "signal",
+   "priority": 16
+  },
+  "MCU:ANA_EN": {
+   "kind": "signal",
+   "priority": 17
+  },
+  "MCU:VBAT": {
+   "kind": "power"
+  },
+  "MCU:VBAT_RAW": {
+   "kind": "power"
+  },
+  "PD:PD_BIAS": {
+   "kind": "signal"
+  },
+  "PD:PD_SIG": {
+   "kind": "signal"
+  }
+ }
+}

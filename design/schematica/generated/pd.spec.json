@@ -1,0 +1,73 @@
+{
+  "title": "pd",
+  "parts": [
+    {
+      "ref": "J2",
+      "mpn": "0530470210",
+      "value": "PHOTODIODE",
+      "why": "photodiode cable: pin 1 = BPW34 cathode, pin 2 = BPW34 anode"
+    },
+    {
+      "ref": "R8",
+      "mpn": "RC0805FR-071KL",
+      "kind": "R",
+      "value": "1k",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "bias feed filter",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "C4",
+      "mpn": "CL21B104KBCNNNC",
+      "kind": "C",
+      "value": "100n",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21B104KBCNNN.do",
+      "why": "bias feed filter, at J1",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+    },
+    {
+      "ref": "R9",
+      "mpn": "RC0805FR-071KL",
+      "kind": "R",
+      "value": "1k",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "series isolation for the cable",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "R10",
+      "mpn": "RC0805FR-07100KL",
+      "kind": "R",
+      "value": "100k",
+      "datasheet": "https://yageogroup.com/content/Resource%20Library/Datasheet/PYU-RC_GROUP_51_ROHS_L.pdf",
+      "why": "photocurrent to voltage; ~10 uA white patch -> ~1 V. Tune to the screen",
+      "footprint": "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+    },
+    {
+      "ref": "C5",
+      "mpn": "CL21C103JBF1PNE",
+      "kind": "C",
+      "value": "10n",
+      "datasheet": "https://product.samsungsem.com/mlcc/CL21C103JBF1PN.do",
+      "why": "~1 ms smoothing of backlight PWM",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
+    }
+  ],
+  "nets": {
+    "R8.1": "+3.3V",
+    "C4.2": "GND",
+    "R10.2": "GND",
+    "C5.2": "GND",
+    "R8.2": "PD_BIAS",
+    "C4.1": "PD_BIAS",
+    "J2.1": "PD_BIAS",
+    "J2.2": "PD_SIG",
+    "R9.1": "PD_SIG",
+    "R9.2": "PD_OUT",
+    "R10.1": "PD_OUT",
+    "C5.1": "PD_OUT"
+  },
+  "hier_labels": {
+    "PD_OUT": "output"
+  }
+}

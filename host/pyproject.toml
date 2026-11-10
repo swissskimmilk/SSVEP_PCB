@@ -1,0 +1,26 @@
+[project]
+name = "ssvep-host"
+version = "0.1.0"
+description = "Control, stimulus and analysis software for the SSVEP EEG board"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "PyQt6",
+    "pyqtgraph",
+    "bleak",
+    "pyserial",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+ssvep = "ssvep_host.app:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["ssvep_host*"]

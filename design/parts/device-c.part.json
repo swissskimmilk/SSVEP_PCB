@@ -1,0 +1,22 @@
+{
+ "part_number": "Device:C",
+ "reference_prefix": "C",
+ "source_symbol": "Device:C",
+ "description": "Unpolarized capacitor",
+ "groups": [
+  {
+   "role": "passive",
+   "pins": [
+    [
+     "~",
+     "1"
+    ],
+    [
+     "~",
+     "2"
+    ]
+   ]
+  }
+ ],
+ "component_type": "capacitor"
+}

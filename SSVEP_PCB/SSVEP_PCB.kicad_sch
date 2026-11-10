@@ -1,0 +1,260 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "24208f67-7b82-44aa-b72f-6dc83391700a")
+	(paper "A4")
+	(title_block
+		(title "SSVEP EEG board")
+		(date "2026-10-19")
+		(rev "A")
+		(company "SSVEP EEG board")
+		(comment 1 "Root page: sheet boxes only")
+	)
+	(lib_symbols)
+	(text "SSVEP EEG board"
+		(exclude_from_sim no)
+		(at 27.94 33.02 0)
+		(effects
+			(font
+				(size 3.048 3.048)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "96a11385-28f5-4f30-8729-ed85bb469b92")
+	)
+	(text "The sheets join by name: +3.3V and GND power symbols, and global labels\nADC_SCLK  ADC_DIN  ADC_DOUT  ADC_CS_N  ADC_DRDY_N  ADC_SYNC_RST  ADC_CLKIN\nPD_OUT  VBAT  ANA_EN"
+		(exclude_from_sim no)
+		(at 27.94 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e2443f18-1453-4284-b259-7335167a280e")
+	)
+	(sheet
+		(at 27.94 55.88)
+		(size 100.33 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5f0c3a5e-1d6b-4f1e-9b7a-3c2e8d4a1000")
+		(property "Sheetname" "ANALOG"
+			(at 27.94 55.1684 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sheets/analog.kicad_sch"
+			(at 27.94 97.1046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SSVEP_PCB"
+				(path "/24208f67-7b82-44aa-b72f-6dc83391700a"
+					(page "2")
+				)
+			)
+		)
+	)
+	(text "Partners' front end: 4x INA333 (gain 501), DRL (MCP6002), vref, ADS131M08"
+		(exclude_from_sim no)
+		(at 30.48 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "05670b3a-2005-43ea-8e9f-7bcb2dd6ecbf")
+	)
+	(sheet
+		(at 157.48 55.88)
+		(size 100.33 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5f0c3a5e-1d6b-4f1e-9b7a-3c2e8d4a1001")
+		(property "Sheetname" "POWER"
+			(at 157.48 55.1684 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sheets/power.kicad_sch"
+			(at 157.48 97.1046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SSVEP_PCB"
+				(path "/24208f67-7b82-44aa-b72f-6dc83391700a"
+					(page "3")
+				)
+			)
+		)
+	)
+	(text "1S LiPo, power switch, TPS7A2033 low-noise +3.3V for the analog side"
+		(exclude_from_sim no)
+		(at 160.02 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d35a018c-d9db-4c75-bef4-9f37416ba1a2")
+	)
+	(sheet
+		(at 27.94 111.76)
+		(size 100.33 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5f0c3a5e-1d6b-4f1e-9b7a-3c2e8d4a1002")
+		(property "Sheetname" "MCU"
+			(at 27.94 111.0484 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sheets/mcu.kicad_sch"
+			(at 27.94 152.9846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SSVEP_PCB"
+				(path "/24208f67-7b82-44aa-b72f-6dc83391700a"
+					(page "4")
+				)
+			)
+		)
+	)
+	(text "Seeed XIAO nRF52840: SPI to the ADC, ADC clock, charge link"
+		(exclude_from_sim no)
+		(at 30.48 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ccef659b-5199-41c0-ae4c-c60b1ddc4dbd")
+	)
+	(sheet
+		(at 157.48 111.76)
+		(size 100.33 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5f0c3a5e-1d6b-4f1e-9b7a-3c2e8d4a1003")
+		(property "Sheetname" "PHOTODIODE"
+			(at 157.48 111.0484 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sheets/photodiode.kicad_sch"
+			(at 157.48 152.9846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "SSVEP_PCB"
+				(path "/24208f67-7b82-44aa-b72f-6dc83391700a"
+					(page "5")
+				)
+			)
+		)
+	)
+	(text "Screen-sync photodiode into ADC channel 4"
+		(exclude_from_sim no)
+		(at 160.02 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "702611c9-4b83-44a2-b36f-c91394411347")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
