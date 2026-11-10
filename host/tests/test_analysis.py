@@ -38,7 +38,8 @@ def synth_session(tmp_path, freqs=(8.0, 10.0, 12.0, 15.0), reps=2, lost=()):
                            t_swap=t0 + (s.start + s.frames) / REFRESH))
         on = (frame >= s.start) & (frame < s.start + s.frames)
         k = frame[on] - s.start
-        lum = np.array([target_luminance(tgt.freq, tgt.phase, int(i), REFRESH) for i in k])
+        lum = np.array([target_luminance(tgt.freq, tgt.phase, int(i), REFRESH, cfg.waveform)
+                        for i in k])
         lum[k < cfg.onset_marker_frames] = 1.0
         patch[on] = lum
         # SSVEP 140 ms after the light, 2 uV, in all four channels
@@ -120,3 +121,31 @@ def test_period_estimate_survives_stalls():
     times = 100.0 + k * period + rng.normal(0, 2e-4, len(k))
     assert estimate_period(list(times), 240.0) == pytest.approx(period, rel=1e-4)
     assert estimate_period(list(times)) == pytest.approx(period, rel=1e-4)
+
+
+def test_square_wave_is_even_on_divisors():
+    from ssvep_host.stim.window import uneven_frequencies
+    lum = [target_luminance(15.0, 0.0, f, 240.0, "square") for f in range(32)]
+    assert lum == [1.0] * 8 + [0.0] * 8 + [1.0] * 8 + [0.0] * 8
+    assert uneven_frequencies([8, 10, 12, 15, 20, 24], 240.0) == []
+    assert uneven_frequencies([8, 10, 12, 15], 60.0) == [8, 12]  # 7.5 and 5 frames per cycle
+    assert uneven_frequencies([11.3], 240.0) == [11.3]
+
+
+@pytest.mark.parametrize("n", [1, 2, 3, 4, 6, 8])
+@pytest.mark.parametrize("corner", ["bottom-left", "top-right"])
+def test_corner_layout_clears_patch(n, corner):
+    from ssvep_host.stim.window import target_rects
+    w, h, s = 2048, 1280, 60
+    cfg = StimConfig(targets=grid_targets([10.0 + i for i in range(n)]), patch_corner=corner, patch_px=s)
+    rects = target_rects(cfg, w, h)
+    px = 0 if "left" in corner else w - s
+    py = 0 if "top" in corner else h - s
+    for x, y, side in rects:
+        assert 0 <= x and x + side <= w and 0 <= y and y + side <= h
+        gap_x = max(px - (x + side), x - (px + s))
+        gap_y = max(py - (y + side), y - (py + s))
+        assert max(gap_x, gap_y) >= s  # at least a patch width of black
+    for i, (x1, y1, s1) in enumerate(rects):
+        for x2, y2, s2 in rects[i + 1:]:
+            assert x1 + s1 <= x2 or x2 + s2 <= x1 or y1 + s1 <= y2 or y2 + s2 <= y1

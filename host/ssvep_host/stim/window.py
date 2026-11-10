@@ -57,6 +57,39 @@ def calibration_schedule(refresh: float, cycles: int = 3, seconds: float = 2.0) 
     return segs
 
 
+def target_rects(cfg: StimConfig, w: float, h: float) -> list[tuple[float, float, float]]:
+    """(left, top, side) in pixels for each target.
+
+    "corners" pushes targets out to the screen edges, as far apart as they can be. They
+    stay at least two patch widths in from every edge, so the sync patch in its corner
+    always has a black gap around it and the photodiode cannot see a target."""
+    n = len(cfg.targets)
+    if cfg.layout != "corners":
+        return [(t.x * w - t.size * h / 2, t.y * h - t.size * h / 2, t.size * h) for t in cfg.targets]
+    m = max(0.05 * h, 2 * cfg.patch_px)
+    side = min(cfg.targets[0].size * h if n else 0, (h - 3 * m) / 2)
+    lo_x, hi_x, lo_y, hi_y = m, w - m - side, m, h - m - side
+    mid_y = (h - side) / 2
+    corner = {"top-left": (lo_x, lo_y), "top-right": (hi_x, lo_y),
+              "bottom-left": (lo_x, hi_y), "bottom-right": (hi_x, hi_y)}
+    if n == 1:
+        spots = [((w - side) / 2, mid_y)]
+    elif n == 2:
+        spots = [(lo_x, mid_y), (hi_x, mid_y)]
+    elif n == 3:  # the three corners the patch is not in
+        spots = [xy for name, xy in corner.items() if name != cfg.patch_corner]
+    elif n == 4:
+        spots = [corner["top-left"], corner["top-right"], corner["bottom-left"], corner["bottom-right"]]
+    else:  # grid stretched to the edges
+        cols = 3 if n <= 6 else 4
+        rows = (n + cols - 1) // cols
+        side = min(side, (w - (cols + 1) * m) / cols, (h - (rows + 1) * m) / rows)
+        xs = [lo_x + (w - 2 * m - side) * c / (cols - 1) for c in range(cols)]
+        ys = [lo_y + (h - 2 * m - side) * r / max(rows - 1, 1) for r in range(rows)]
+        spots = [(xs[i % cols], ys[i // cols]) for i in range(n)]
+    return [(x, y, side) for x, y in spots]
+
+
 def estimate_period(times: list[float], nominal_hz: float = 0.0) -> float:
     """Refresh period from swap times that may include stalls: take the typical interval
     near the nominal rate, number every swap on that vsync grid, and fit the slope."""
@@ -71,8 +104,21 @@ def estimate_period(times: list[float], nominal_hz: float = 0.0) -> float:
     return float(np.polyfit(n, t, 1)[0])
 
 
-def target_luminance(freq: float, phase: float, frame: int, refresh: float) -> float:
-    return 0.5 * (1 + math.sin(2 * math.pi * freq * frame / refresh + phase))
+def target_luminance(freq: float, phase: float, frame: int, refresh: float,
+                     waveform: str = "sine") -> float:
+    """Luminance 0..1 of a target on a frame. Square is white for the first half of each
+    cycle (phase in radians shifts both waveforms the same way)."""
+    cycles = freq * frame / refresh + phase / (2 * math.pi)
+    if waveform == "square":
+        return 1.0 if cycles % 1.0 < 0.5 else 0.0
+    return 0.5 * (1 + math.sin(2 * math.pi * cycles))
+
+
+def uneven_frequencies(freqs: list[float], refresh: float, tol: float = 0.02) -> list[float]:
+    """Square-wave frequencies whose cycle is not a whole number of frames: their
+    on/off halves alternate in length, so they flicker unevenly."""
+    return [f for f in freqs if abs(refresh / f - round(refresh / f)) > tol
+            or round(refresh / f) % 2]
 
 
 def run_stimulus(mode: str, cfg_dict: dict, events, abort, luminance=None) -> None:
@@ -126,12 +172,14 @@ def run_stimulus(mode: str, cfg_dict: dict, events, abort, luminance=None) -> No
             self.update()  # next frame, painted after this vsync
 
         def start_schedule(self) -> None:
-            # Windows reports the panel's exact rate; swap callbacks are jittery under
-            # stalls, so the measurement is only a check that vsync is really on.
+            # The vsync grid is the panel's rate, which Windows reports exactly. Measured
+            # swaps can run slower (a throttled or covered window skips vsyncs, which the
+            # vsync-time frame index absorbs) or faster (vsync forced off), so they are
+            # only a check, used as the rate only when the OS gives none.
             nominal = self.screen().refreshRate()
             measured = 1.0 / estimate_period(self.swap_times[10:], nominal)
             use_nominal = nominal > 0 and abs(measured / nominal - 1) < 0.03
-            self.refresh = nominal if use_nominal else measured
+            self.refresh = nominal if nominal > 0 else measured
             self.period = 1.0 / self.refresh
             self.t_origin = self.swap_times[-1] + self.period
             self.first_sched_paint = self.frame
@@ -142,7 +190,9 @@ def run_stimulus(mode: str, cfg_dict: dict, events, abort, luminance=None) -> No
                 self.schedule, order = build_schedule(cfg, self.refresh)
             self.drops = 0
             send("refresh", hz=self.refresh, measured_hz=measured, nominal_hz=nominal,
-                 vsync_ok=use_nominal, order=order,
+                 vsync_ok=use_nominal, order=order, waveform=cfg.waveform,
+                 uneven=(uneven_frequencies([t.freq for t in cfg.targets], self.refresh)
+                         if cfg.waveform == "square" else []),
                  targets=[t.__dict__ for t in cfg.targets], mode=mode)
 
         # -- drawing -----------------------------------------------------------
@@ -207,11 +257,11 @@ def run_stimulus(mode: str, cfg_dict: dict, events, abort, luminance=None) -> No
 
         def draw_targets(self, p: QPainter, seg: Segment, f: int, w: int, h: int) -> float:
             patch = 0.0
-            for i, tgt in enumerate(cfg.targets):
-                side = tgt.size * h
-                rect = QRectF(tgt.x * w - side / 2, tgt.y * h - side / 2, side, side)
+            for i, (tgt, (x0, y0, side)) in enumerate(zip(cfg.targets, target_rects(cfg, w, h))):
+                rect = QRectF(x0, y0, side, side)
                 if seg.kind == "stim":
-                    lum = target_luminance(tgt.freq, tgt.phase, f - seg.start, self.refresh)
+                    lum = target_luminance(tgt.freq, tgt.phase, f - seg.start, self.refresh,
+                                           cfg.waveform)
                     if i == seg.target:
                         marker = f - seg.start < cfg.onset_marker_frames
                         patch = 1.0 if marker else lum

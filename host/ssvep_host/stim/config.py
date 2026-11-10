@@ -28,7 +28,9 @@ class StimConfig:
     patch_corner: str = "bottom-left"  # under the photodiode
     patch_px: int = 60
     onset_marker_frames: int = 3       # patch fully white this many frames at each onset
-    gamma: float = 1.0                 # display gamma; 2.2 makes flicker luminance sinusoidal
+    layout: str = "corners"            # "corners": spread to the screen edges; "grid": target x/y
+    waveform: str = "square"           # "square": full on/off; "sine": smooth, any frequency
+    gamma: float = 1.0                 # display gamma; 2.2 makes sine flicker truly sinusoidal
     idle_level: float = 0.5            # target luminance during cue and rest
     windowed: bool = False             # development: small window instead of fullscreen
 
@@ -45,6 +47,15 @@ class StimConfig:
         d = dict(d)
         d["targets"] = [Target(**t) for t in d.get("targets", [])]
         return cls(**d)
+
+
+# Square-wave friendly at 240 Hz (even frame counts), above alpha, no shared harmonics
+# through the 3rd. Start with two; four once two works.
+PRESETS = {
+    "2 targets (12, 15 Hz)": [12.0, 15.0],
+    "4 targets (12, 13.33, 15, 17.14 Hz)": [12.0, 240 / 18, 15.0, 240 / 14],
+    "4 classic (8, 10, 12, 15 Hz)": [8.0, 10.0, 12.0, 15.0],
+}
 
 
 def grid_targets(freqs: list[float], phases: list[float] | None = None) -> list[Target]:

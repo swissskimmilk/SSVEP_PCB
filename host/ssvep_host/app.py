@@ -22,7 +22,7 @@ from . import protocol as P
 from .analysis import analyse
 from .device import BleDevice, Device, SerialDevice, SimDevice
 from .recorder import Recorder
-from .stim.config import StimConfig, grid_targets
+from .stim.config import PRESETS, StimConfig, grid_targets
 from .stim.window import run_stimulus
 
 SESSIONS = Path(__file__).resolve().parent.parent / "sessions"
@@ -154,7 +154,12 @@ class MainWindow(QMainWindow):
 
         stim = QGroupBox("Stimulus")
         f = QFormLayout(stim)
-        self.freqs = QLineEdit("8, 10, 12, 15")
+        self.preset = QComboBox()
+        self.preset.addItems([*PRESETS, "Custom"])
+        self.freqs = QLineEdit()
+        self.preset.currentTextChanged.connect(self.preset_changed)
+        self.freqs.textEdited.connect(lambda _: self.preset.setCurrentText("Custom"))
+        self.preset_changed(self.preset.currentText())
         self.cue = self._spin(1.0, 0, 5)
         self.stim_s = self._spin(4.0, 0.5, 30)
         self.rest = self._spin(1.5, 0.6, 10)
@@ -170,13 +175,20 @@ class MainWindow(QMainWindow):
         self.patch_px = QSpinBox()
         self.patch_px.setRange(20, 400)
         self.patch_px.setValue(60)
+        self.layout_box = QComboBox()
+        self.layout_box.addItems(["corners", "grid"])
+        self.waveform = QComboBox()
+        self.waveform.addItems(["square", "sine"])
         self.gamma = self._spin(1.0, 1.0, 3.0)
         self.windowed = QCheckBox("Windowed (testing only)")
+        f.addRow("Targets", self.preset)
         f.addRow("Frequencies (Hz)", self.freqs)
         f.addRow("Cue / stim / rest (s)", self._hbox(self.cue, self.stim_s, self.rest))
         f.addRow("Trials per target", self.reps)
         f.addRow("Screen", self.screen)
         f.addRow("Sync patch", self._hbox(self.corner, self.patch_px))
+        f.addRow("Layout", self.layout_box)
+        f.addRow("Waveform", self.waveform)
         f.addRow("Display gamma", self.gamma)
         f.addRow(self.windowed)
         self.calib_btn = QPushButton("Calibrate photodiode")
@@ -339,13 +351,21 @@ class MainWindow(QMainWindow):
 
     # ---------------------------------------------------------------- stimulus
 
+    def preset_changed(self, name: str) -> None:
+        if name in PRESETS:
+            self.freqs.setText(", ".join(f"{x:.4g}" for x in PRESETS[name]))
+
     def stim_config(self) -> StimConfig:
-        freqs = [float(x) for x in self.freqs.text().replace(";", ",").split(",") if x.strip()]
+        preset = PRESETS.get(self.preset.currentText())
+        freqs = list(preset) if preset else [
+            float(x) for x in self.freqs.text().replace(";", ",").split(",") if x.strip()]
         return StimConfig(targets=grid_targets(freqs), cue_s=self.cue.value(),
                           stim_s=self.stim_s.value(), rest_s=self.rest.value(),
                           trials_per_target=self.reps.value(), screen=self.screen.currentIndex(),
                           patch_corner=self.corner.currentText(), patch_px=self.patch_px.value(),
-                          gamma=self.gamma.value(), windowed=self.windowed.isChecked())
+                          gamma=self.gamma.value(), windowed=self.windowed.isChecked(),
+                          waveform=self.waveform.currentText(),
+                          layout=self.layout_box.currentText())
 
     def start_stim(self, mode: str) -> None:
         try:
@@ -385,9 +405,13 @@ class MainWindow(QMainWindow):
         kind = ev["kind"]
         if kind == "refresh":
             self.say(f"display {ev['hz']:.3f} Hz (measured {ev['measured_hz']:.2f})")
+            if ev.get("uneven"):
+                self.say(f"  square wave: {ev['uneven']} Hz is not an even number of frames at "
+                         f"{ev['hz']:.0f} Hz, so on/off halves will differ in length")
             if not ev["vsync_ok"]:
-                self.say("  measured rate disagrees with the display's: vsync may be off "
-                         "(check the GPU driver's vsync setting)")
+                self.say(f"  frames are arriving at {ev['measured_hz']:.0f} Hz, not "
+                         f"{ev['hz']:.0f}: the window is throttled (covered, not fullscreen) "
+                         "or vsync is off. Timing stays correct; the photodiode will confirm.")
         elif kind == "stim_start":
             self.progress.setText(f"trial {ev['trial'] + 1}/{self.n_trials}: {ev['freq']:g} Hz")
         elif kind == "rest_start" and ev.get("drops_in_stim"):
