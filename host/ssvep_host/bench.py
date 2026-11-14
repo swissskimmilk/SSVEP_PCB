@@ -125,6 +125,7 @@ def touch(port: str | None, seconds: float) -> Path:
 
     folder = _folder()
     np.savez(folder / "data.npz", fs=fs, touch=x)
+    plot(folder)
     return folder
 
 
@@ -136,6 +137,8 @@ def plot(folder: Path) -> Path:
 
     d = np.load(Path(folder) / "data.npz")
     fs = float(d["fs"])
+    if "touch" in d:
+        return _plot_touch(Path(folder), d["touch"], fs, plt)
     ch = np.arange(5)
     fig, ax = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
     fig.suptitle(f"ADS131M08 bench self-test, {fs:.0f} SPS, PGA x1")
@@ -185,6 +188,39 @@ def plot(folder: Path) -> Path:
     t_.legend()
 
     out = Path(folder) / "selftest.png"
+    fig.savefig(out, dpi=120)
+    return out
+
+
+def _plot_touch(folder: Path, x: np.ndarray, fs: float, plt) -> Path:
+    n = int(fs)
+    secs = len(x) // n
+    t = np.arange(n) / fs
+    a60 = np.empty((secs, 5))
+    for k in range(secs):
+        w = x[k * n:(k + 1) * n].astype(float) * UV_PER_CODE
+        w -= w.mean(0)
+        a60[k] = 2 * np.abs((w * np.exp(-2j * np.pi * 60 * t)[:, None]).mean(0))
+
+    fig, ax = plt.subplots(2, 1, figsize=(12, 8), constrained_layout=True)
+    fig.suptitle(f"Touch test, {fs:.0f} SPS, PGA x1")
+    tt = np.arange(len(x)) / fs
+    for c in range(5):
+        ax[0].plot(tt, x[:, c] * UV_PER_CODE / 1e3, lw=0.6, label=NAMES[c])
+    ax[0].set_xlabel("Time (s)")
+    ax[0].set_ylabel("mV at ADC input")
+    ax[0].set_title("Raw signal")
+    ax[0].grid(True)
+    ax[0].legend()
+    for c in range(5):
+        ax[1].semilogy(np.arange(secs) + 0.5, a60[:, c], "-o", label=NAMES[c])
+    ax[1].set_xlabel("Time (s)")
+    ax[1].set_ylabel("60 Hz amplitude, uV")
+    ax[1].set_title("60 Hz pickup per second")
+    ax[1].grid(True)
+    ax[1].legend()
+
+    out = folder / "touch.png"
     fig.savefig(out, dpi=120)
     return out
 
