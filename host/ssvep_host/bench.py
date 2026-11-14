@@ -23,7 +23,7 @@ from . import protocol as P
 
 MODES = {"normal": 0, "shorted": 1, "ptest": 2, "ntest": 3}
 CHANNELS = range(5)
-NAMES = ["EEG 0", "EEG 1", "EEG 2", "EEG 3", "Photodiode"]
+NAMES = ["ch 0", "ch 1", "ch 2", "ch 3", "PD"]
 UV_PER_CODE = P.ADC_FSR_V / 2**23 * 1e6  # PGA x1, at the ADC input
 SETTLE = 100  # samples dropped after each start
 
@@ -141,26 +141,26 @@ def plot(folder: Path) -> Path:
         return _plot_touch(Path(folder), d["touch"], fs, plt)
     ch = np.arange(5)
     fig, ax = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
-    fig.suptitle(f"ADS131M08 bench self-test, {fs:.0f} SPS, PGA x1")
+    fig.suptitle("ADC self-test")
 
     a = ax[0, 0]
     a.plot(ch, d["ptest"].mean(0) * UV_PER_CODE / 1e3, "o", label="+test")
     a.plot(ch, d["ntest"].mean(0) * UV_PER_CODE / 1e3, "o", label="-test")
-    a.axhline(160, color="gray", ls="--", label="nominal +-160 mV")
+    a.axhline(160, color="gray", ls="--", label="nominal")
     a.axhline(-160, color="gray", ls="--")
     a.set_xticks(ch, NAMES)
-    a.set_ylabel("mV at ADC input")
-    a.set_title("Internal test signal")
+    a.set_ylabel("mV")
+    a.set_title("Test signal")
     a.grid(True)
     a.legend()
 
     b = ax[0, 1]
-    for key, label in (("normal", "normal"), ("shorted", "shorted"), ("ptest", "+test")):
+    for key, label in (("normal", "normal"), ("shorted", "shorted"), ("ptest", "test")):
         b.plot(ch, d[key].astype(float).std(0) * UV_PER_CODE, "-o", label=label)
     b.set_xticks(ch, NAMES)
     b.set_ylim(0, None)
-    b.set_ylabel("RMS noise, uV at ADC input")
-    b.set_title("Noise by input mode")
+    b.set_ylabel("µV rms")
+    b.set_title("Noise")
     b.grid(True)
     b.legend()
 
@@ -169,9 +169,9 @@ def plot(folder: Path) -> Path:
         x = d[key][:, 0].astype(float) * UV_PER_CODE
         f, p = welch(x - x.mean(), fs=fs, nperseg=min(len(x), 1024))
         c.semilogy(f[1:], np.sqrt(p[1:]), label=key)
-    c.set_xlabel("Frequency (Hz)")
-    c.set_ylabel("uV/sqrt(Hz) at ADC input")
-    c.set_title("Spectrum, EEG 0")
+    c.set_xlabel("Hz")
+    c.set_ylabel("µV/√Hz")
+    c.set_title("Spectrum, ch 0")
     c.grid(True)
     c.legend()
 
@@ -181,8 +181,8 @@ def plot(folder: Path) -> Path:
     for i in ch:
         x = d["normal"][:n, i].astype(float) * UV_PER_CODE
         t_.plot(t, x - x.mean(), lw=0.8, label=NAMES[i])
-    t_.set_xlabel("Time (s)")
-    t_.set_ylabel("uV, mean removed")
+    t_.set_xlabel("s")
+    t_.set_ylabel("µV")
     t_.set_title("Normal mode")
     t_.grid(True)
     t_.legend()
@@ -203,20 +203,20 @@ def _plot_touch(folder: Path, x: np.ndarray, fs: float, plt) -> Path:
         a60[k] = 2 * np.abs((w * np.exp(-2j * np.pi * 60 * t)[:, None]).mean(0))
 
     fig, ax = plt.subplots(2, 1, figsize=(12, 8), constrained_layout=True)
-    fig.suptitle(f"Touch test, {fs:.0f} SPS, PGA x1")
+    fig.suptitle("Touch test")
     tt = np.arange(len(x)) / fs
     for c in range(5):
         ax[0].plot(tt, x[:, c] * UV_PER_CODE / 1e3, lw=0.6, label=NAMES[c])
-    ax[0].set_xlabel("Time (s)")
-    ax[0].set_ylabel("mV at ADC input")
-    ax[0].set_title("Raw signal")
+    ax[0].set_xlabel("s")
+    ax[0].set_ylabel("mV")
+    ax[0].set_title("Raw")
     ax[0].grid(True)
     ax[0].legend()
     for c in range(5):
         ax[1].semilogy(np.arange(secs) + 0.5, a60[:, c], "-o", label=NAMES[c])
-    ax[1].set_xlabel("Time (s)")
-    ax[1].set_ylabel("60 Hz amplitude, uV")
-    ax[1].set_title("60 Hz pickup per second")
+    ax[1].set_xlabel("s")
+    ax[1].set_ylabel("µV")
+    ax[1].set_title("60 Hz amplitude")
     ax[1].grid(True)
     ax[1].legend()
 
