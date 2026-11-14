@@ -159,7 +159,11 @@ bool power_on() {
     delay(1);
 
     s_on = true;
-    s_id = read_reg(reg::ID);
+    // The first frames after a reset answer 0xFF28 (reset acknowledged); skip past them.
+    for (int tries = 0; tries < 4; tries++) {
+        s_id = read_reg(reg::ID);
+        if (s_id != 0xFF28) break;
+    }
     return (s_id >> 8) == 0x28;  // 0x28xx: 8 channels
 }
 

@@ -23,5 +23,6 @@ cd firmware && pio run -t upload                        # flash the board over U
 - [Running a session](docs/session.md)
 - [Hardware](docs/hardware.md)
 - [Protocol](docs/protocol.md)
+- [Bring-up](docs/bringup.md)
 
 > Never put electrodes on a person while USB is plugged in. Battery and BLE only.

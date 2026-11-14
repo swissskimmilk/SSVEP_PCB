@@ -14,6 +14,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = ["pytest"]
+bench = ["matplotlib"]
 
 [project.scripts]
 ssvep = "ssvep_host.app:main"
