@@ -27,3 +27,6 @@ python -m ssvep_host.bench touch      # touch an electrode input while it record
 ADC, clock, SPI and firmware pass. The EEG channels all read about +63 mV with almost
 no noise, which looks like the INA333 outputs stuck at their low rail. Next: measure
 `vref` (U6 pins 5 and 7, R35) — it should be about 1.65 V.
+
+Recordings: [self-test](bench/board1/selftest/selftest.png), [touch](bench/board1/touch/touch.png).
+Raw samples are in each folder's `data.npz`; re-plot with `python -m ssvep_host.bench plot <folder>`.
